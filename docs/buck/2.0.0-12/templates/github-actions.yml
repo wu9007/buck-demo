@@ -27,25 +27,6 @@ jobs:
     name: verify
     needs: verify_brick_rules
     runs-on: ubuntu-latest
-    env:
-      BUSINESS_DB_URL: jdbc:postgresql://127.0.0.1:5432/buck_demo
-      BUSINESS_DB_USERNAME: buck
-      BUSINESS_DB_PASSWORD: buck
-      BUSINESS_DB_DRIVER: org.postgresql.Driver
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: buck
-          POSTGRES_PASSWORD: buck
-          POSTGRES_DB: buck_demo
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U buck -d buck_demo"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -1,6 +1,6 @@
 # 业务应用 AI 短上下文
 
-Buck 版本：2.0.0-11
+Buck 版本：2.0.0-12
 
 ## 当前目标
 
@@ -22,7 +22,7 @@ cd frontend && npm run dev
 ## Buck 资料包
 
 ```text
-docs/buck/2.0.0-11/
+docs/buck/2.0.0-12/
 ```
 
-业务侧 agent skill：`docs/buck/2.0.0-11/agent-skills/buck-business-agent/`
+业务侧 agent skill：`docs/buck/2.0.0-12/agent-skills/buck-business-agent/`
