@@ -3,7 +3,7 @@
   "private": true,
   "description": "Independent Buck business app used to validate the published adopt/develop/feedback loop.",
   "scripts": {
-    "check": "node docs/buck/2.0.0-11/rules/check-business-structure.mjs .",
+    "check": "node docs/buck/2.0.0-12/rules/check-business-structure.mjs .",
     "test": "npm --prefix frontend run check --if-present"
   }
 }

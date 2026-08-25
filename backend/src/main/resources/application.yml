@@ -5,10 +5,10 @@ spring:
   application:
     name: buck-demo
   datasource:
-    url: ${BUSINESS_DB_URL:jdbc:h2:mem:buck_demo;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE}
-    username: ${BUSINESS_DB_USERNAME:sa}
-    password: ${BUSINESS_DB_PASSWORD:}
-    driver-class-name: ${BUSINESS_DB_DRIVER:org.h2.Driver}
+    url: ${BUSINESS_DB_URL:jdbc:postgresql://127.0.0.1:5432/buck_demo}
+    username: ${BUSINESS_DB_USERNAME:buck}
+    password: ${BUSINESS_DB_PASSWORD:buck}
+    driver-class-name: ${BUSINESS_DB_DRIVER:org.postgresql.Driver}
 
 brick:
   security:
