@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "kind": "brick-breaking-changes",
+  "version": "2.0.0-11",
+  "tag": "v2.0.0-11",
+  "summary": {
+    "breaking": 0,
+    "optional": 36
+  },
+  "items": [
+    {
+      "surface": "api",
+      "target": "modules:audit POST /audit/logs/export",
+      "old": null,
+      "new": "modules:audit POST /audit/logs/export",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "endpoint added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:audit.AuditLogExportResult",
+      "old": null,
+      "new": "modules:audit.AuditLogExportResult",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "permissions",
+      "target": "modules:audit.audit:log:export",
+      "old": null,
+      "new": "modules:audit.audit:log:export",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "permission code added"
+    },
+    {
+      "surface": "module",
+      "target": "modules:identity-federation",
+      "old": null,
+      "new": "modules:identity-federation",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "module added"
+    },
+    {
+      "surface": "api",
+      "target": "modules:securitySetting POST /security-setting/login-security/federated-login-entries/disable",
+      "old": null,
+      "new": "modules:securitySetting POST /security-setting/login-security/federated-login-entries/disable",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "endpoint added"
+    },
+    {
+      "surface": "api",
+      "target": "modules:securitySetting POST /security-setting/login-security/federated-login-entries/enable",
+      "old": null,
+      "new": "modules:securitySetting POST /security-setting/login-security/federated-login-entries/enable",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "endpoint added"
+    },
+    {
+      "surface": "api",
+      "target": "modules:securitySetting POST /security-setting/session-token/detail",
+      "old": null,
+      "new": "modules:securitySetting POST /security-setting/session-token/detail",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "endpoint added"
+    },
+    {
+      "surface": "api",
+      "target": "modules:securitySetting PUT /security-setting/login-security/device-check-policy",
+      "old": null,
+      "new": "modules:securitySetting PUT /security-setting/login-security/device-check-policy",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "endpoint added"
+    },
+    {
+      "surface": "api",
+      "target": "modules:securitySetting PUT /security-setting/session-token/policy",
+      "old": null,
+      "new": "modules:securitySetting PUT /security-setting/session-token/policy",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "endpoint added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.FederatedLoginEntryRequest",
+      "old": null,
+      "new": "modules:securitySetting.FederatedLoginEntryRequest",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.FederatedLoginEntryResult",
+      "old": null,
+      "new": "modules:securitySetting.FederatedLoginEntryResult",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.LoginDeviceCheckPolicySetting",
+      "old": null,
+      "new": "modules:securitySetting.LoginDeviceCheckPolicySetting",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.LoginSecuritySetting.deviceCheckEnabled",
+      "old": null,
+      "new": "modules:securitySetting.LoginSecuritySetting.deviceCheckEnabled",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "field added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.LoginSecuritySetting.deviceCheckRequireDeviceId",
+      "old": null,
+      "new": "modules:securitySetting.LoginSecuritySetting.deviceCheckRequireDeviceId",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "field added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.LoginSecuritySetting.federatedLoginSourceKeys",
+      "old": null,
+      "new": "modules:securitySetting.LoginSecuritySetting.federatedLoginSourceKeys",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "field added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.SessionTokenPolicySetting",
+      "old": null,
+      "new": "modules:securitySetting.SessionTokenPolicySetting",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.SessionTokenSetting",
+      "old": null,
+      "new": "modules:securitySetting.SessionTokenSetting",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "dto",
+      "target": "modules:securitySetting.SessionTokenSettingQuery",
+      "old": null,
+      "new": "modules:securitySetting.SessionTokenSettingQuery",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "dto added"
+    },
+    {
+      "surface": "errors",
+      "target": "modules:securitySetting.SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_KEY_INVALID",
+      "old": null,
+      "new": "modules:securitySetting.SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_KEY_INVALID",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "error code added"
+    },
+    {
+      "surface": "errors",
+      "target": "modules:securitySetting.SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_NOT_READY",
+      "old": null,
+      "new": "modules:securitySetting.SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_NOT_READY",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "error code added"
+    },
+    {
+      "surface": "errors",
+      "target": "modules:securitySetting.SECURITY_SETTING_SESSION_TOKEN_POLICY_INVALID",
+      "old": null,
+      "new": "modules:securitySetting.SECURITY_SETTING_SESSION_TOKEN_POLICY_INVALID",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "error code added"
+    },
+    {
+      "surface": "errors",
+      "target": "modules:securitySetting.SECURITY_SETTING_SESSION_TOKEN_SAVE_FAILED",
+      "old": null,
+      "new": "modules:securitySetting.SECURITY_SETTING_SESSION_TOKEN_SAVE_FAILED",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "error code added"
+    },
+    {
+      "surface": "permissions",
+      "target": "modules:securitySetting.security-setting:session-token:manage",
+      "old": null,
+      "new": "modules:securitySetting.security-setting:session-token:manage",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "permission code added"
+    },
+    {
+      "surface": "permissions",
+      "target": "modules:securitySetting.security-setting:session-token:view",
+      "old": null,
+      "new": "modules:securitySetting.security-setting:session-token:view",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "permission code added"
+    },
+    {
+      "surface": "menus",
+      "target": "modules:securitySetting.security-setting.session-token",
+      "old": null,
+      "new": "modules:securitySetting.security-setting.session-token",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "menu code added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.brick_security_login_setting.device_check_enabled",
+      "old": null,
+      "new": "modules:securitySetting.brick_security_login_setting.device_check_enabled",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "column added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.brick_security_login_setting.device_check_require_device_id",
+      "old": null,
+      "new": "modules:securitySetting.brick_security_login_setting.device_check_require_device_id",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "column added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.brick_security_login_setting.federated_login_source_keys",
+      "old": null,
+      "new": "modules:securitySetting.brick_security_login_setting.federated_login_source_keys",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "column added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.brick_security_platform_setting",
+      "old": null,
+      "new": "modules:securitySetting.brick_security_platform_setting",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "table added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.brick_security_token_setting",
+      "old": null,
+      "new": "modules:securitySetting.brick_security_token_setting",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "table added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.migration:1.0.0-50.006",
+      "old": null,
+      "new": "modules:securitySetting.migration:1.0.0-50.006",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "migration added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.migration:1.0.0-50.007",
+      "old": null,
+      "new": "modules:securitySetting.migration:1.0.0-50.007",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "migration added"
+    },
+    {
+      "surface": "persistence",
+      "target": "modules:securitySetting.migration:1.0.0-50.009",
+      "old": null,
+      "new": "modules:securitySetting.migration:1.0.0-50.009",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "migration added"
+    },
+    {
+      "surface": "frontend-exports",
+      "target": "@wildbuck/core-ui-frontend./list-panel.css",
+      "old": null,
+      "new": "@wildbuck/core-ui-frontend./list-panel.css",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "export added"
+    },
+    {
+      "surface": "frontend-exports",
+      "target": "@wildbuck/core-ui-frontend./session-recovery-ui",
+      "old": null,
+      "new": "@wildbuck/core-ui-frontend./session-recovery-ui",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "export added"
+    },
+    {
+      "surface": "frontend-exports",
+      "target": "@wildbuck/module-identity-federation-frontend",
+      "old": null,
+      "new": "@wildbuck/module-identity-federation-frontend",
+      "action": "adopt-optional",
+      "severity": "additive",
+      "message": "package added"
+    }
+  ]
+}

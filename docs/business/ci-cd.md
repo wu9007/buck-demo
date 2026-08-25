@@ -1,0 +1,6 @@
+# CI/CD
+
+- 工作流：`.github/workflows/ci.yml`，来自资料包 `templates/github-actions.yml`
+- `verify_brick_rules` 执行 `node docs/buck/2.0.0-11/rules/check-business-structure.mjs .`
+- 分支基线：`dev` → `test` → `main`
+- 第一阶段未接 K8s 自动部署；缺组级变量时在 issue 记录，不自造第二套流水线

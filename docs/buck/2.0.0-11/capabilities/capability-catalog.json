@@ -1,0 +1,4411 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Static Buck capability catalog for AI, release bundles, and validation assembly.",
+  "modules": [
+    {
+      "moduleKey": "ai-assistant",
+      "displayName": "AI 助手",
+      "path": "modules/ai-assistant",
+      "aiReadme": "modules/ai-assistant/README.ai.md",
+      "description": "提供 AI 助手交流、AI 服务管理和操作确认能力。",
+      "version": "1.0.0",
+      "maturity": "released-candidate",
+      "dependsOn": {
+        "core": [
+          "ai-agent",
+          "authorization",
+          "error",
+          "module-contracts",
+          "orm-plus",
+          "query",
+          "transport"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.aiassistant"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-ai-assistant-frontend",
+        "description": "Frontend module package for Buck AI assistant sidebar, conversation routes, and assistant interaction surfaces.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./assistant-panel",
+            "types": "./src/assistant-panel.d.ts",
+            "import": "./src/assistant-panel.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          },
+          {
+            "subpath": "./shell-entry",
+            "types": "./src/shell-entry.d.ts",
+            "import": "./src/shell-entry.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-ui-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "ai-assistant:assistant:manage",
+          "name": "AI 助手配置管理"
+        },
+        {
+          "code": "ai-assistant:model-service:manage",
+          "name": "AI 服务管理"
+        }
+      ],
+      "menus": [
+        {
+          "code": "ai-assistant.conversation",
+          "title": "AI 助手",
+          "route": "/ai-assistant/conversation",
+          "permission": "authenticated"
+        },
+        {
+          "code": "ai-assistant.model-services",
+          "title": "AI 服务",
+          "route": "/ai-assistant/model-services",
+          "permission": "ai-assistant:model-service:manage"
+        }
+      ],
+      "pages": [
+        {
+          "id": "ai-assistant.conversation",
+          "featureKey": "conversation",
+          "pageLoaderId": "ai-assistant.conversation",
+          "path": "/ai-assistant/conversation",
+          "title": "AI 助手",
+          "eyebrow": "AI 助手 / 会话",
+          "summary": "在右侧打开助手，按场景分标签交流，并确认需要执行的操作。",
+          "messages": {
+            "viewTitle": "AI 助手",
+            "openSidebarLabel": "打开 AI 助手侧栏",
+            "modelSelectLabel": "AI 服务"
+          },
+          "guide": {
+            "title": "AI 助手任务路径",
+            "steps": [
+              {
+                "anchor": "assistant-entry",
+                "title": "从顶部栏打开助手",
+                "body": "助手会从右侧打开，不会遮挡当前页面。"
+              },
+              {
+                "anchor": "assistant-tabs",
+                "title": "按助手创建标签",
+                "body": "安全、身份和应用助手各自保留聊天内容，不互相覆盖。"
+              },
+              {
+                "anchor": "assistant-input",
+                "title": "选择服务后发送",
+                "body": "发送前可切换 AI 服务；需要执行的操作会按你的权限处理。"
+              }
+            ]
+          },
+          "permission": "authenticated"
+        },
+        {
+          "id": "ai-assistant.model-services",
+          "featureKey": "model-service",
+          "pageLoaderId": "ai-assistant.model-services",
+          "path": "/ai-assistant/model-services",
+          "title": "AI 服务",
+          "eyebrow": "AI 助手 / AI 服务",
+          "summary": "管理智能助手可使用的服务。",
+          "messages": {
+            "viewTitle": "AI 服务",
+            "primaryActionLabel": "保存",
+            "testActionLabel": "验证服务"
+          },
+          "guide": {
+            "title": "AI 服务管理",
+            "steps": [
+              {
+                "anchor": "model-service-list",
+                "title": "查看服务",
+                "body": "查看已经保存的 AI 服务。"
+              },
+              {
+                "anchor": "model-service-form",
+                "title": "新增或编辑",
+                "body": "在抽屉中维护名称、类型和访问密钥。"
+              },
+              {
+                "anchor": "model-service-test",
+                "title": "验证服务",
+                "body": "验证当前 AI 服务是否可用。"
+              }
+            ]
+          },
+          "permission": "ai-assistant:model-service:manage"
+        }
+      ],
+      "features": [
+        {
+          "name": "conversation",
+          "featureKey": "conversation",
+          "permissions": {
+            "use": "authenticated"
+          },
+          "routeIds": [
+            "ai-assistant.conversation"
+          ]
+        },
+        {
+          "name": "modelService",
+          "featureKey": "model-service",
+          "permissions": {
+            "manage": "ai-assistant:model-service:manage"
+          },
+          "routeIds": [
+            "ai-assistant.model-services"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.aiassistant.assistant.provider.AiAssistantQueryDefinitionConfiguration",
+            "file": "modules/ai-assistant/backend/src/main/java/io/github/wu9007/buck/modules/aiassistant/assistant/provider/AiAssistantQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "ai-assistant.assistant.list"
+            ]
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.aiassistant.modelservice.provider.AiModelServiceQueryDefinitionConfiguration",
+            "file": "modules/ai-assistant/backend/src/main/java/io/github/wu9007/buck/modules/aiassistant/modelservice/provider/AiModelServiceQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "ai-assistant.model-service.list"
+            ]
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.aiassistant.toolcall.provider.AiToolCallQueryDefinitionConfiguration",
+            "file": "modules/ai-assistant/backend/src/main/java/io/github/wu9007/buck/modules/aiassistant/toolcall/provider/AiToolCallQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "ai-assistant.tool-call.pending"
+            ]
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "none-found",
+        "source": "java-source-scan",
+        "entries": [],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": []
+    },
+    {
+      "moduleKey": "application-center",
+      "displayName": "应用中心",
+      "path": "modules/application-center",
+      "aiReadme": "modules/application-center/README.ai.md",
+      "description": "应用中心、OAuth client、redirect uri、scope 和应用授权关系。",
+      "version": "1.0.0",
+      "maturity": "released",
+      "dependsOn": {
+        "core": [
+          "ai-agent",
+          "api",
+          "api.frontend",
+          "audit",
+          "authorization",
+          "cipher",
+          "error",
+          "file-resource",
+          "module-contracts",
+          "oauth2",
+          "openapi",
+          "option",
+          "orm-plus",
+          "query"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.applicationcenter"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-application-center-frontend",
+        "description": "Frontend module package for Buck application center routes and feature pages.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-authorization-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-option-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "application-center:app:edit",
+          "name": "编辑应用"
+        },
+        {
+          "code": "application-center:app:grant",
+          "name": "应用授权管理"
+        },
+        {
+          "code": "application-center:app:list",
+          "name": "查看应用"
+        }
+      ],
+      "menus": [
+        {
+          "code": "application-center.apps",
+          "title": "应用中心",
+          "route": "/application-center/apps",
+          "permission": "application-center:app:list"
+        }
+      ],
+      "pages": [
+        {
+          "id": "application-center.apps",
+          "featureKey": "applications",
+          "pageLoaderId": "application-center.apps",
+          "path": "/application-center/apps",
+          "title": "应用中心",
+          "eyebrow": "EIAM / 应用中心",
+          "summary": "维护应用目录、OAuth client、回调地址、scope 和凭据生命周期。",
+          "guide": {
+            "title": "应用中心任务路径",
+            "steps": [
+              {
+                "anchor": "filters",
+                "title": "先定位应用",
+                "body": "按应用类型、状态或关键字筛选，找到要治理的接入应用。"
+              },
+              {
+                "anchor": "list",
+                "title": "再进入应用资料",
+                "body": "打开应用后维护授权范围、凭据和回调地址。"
+              },
+              {
+                "anchor": "primary-action",
+                "title": "新增应用从这里开始",
+                "body": "新建后再配置凭据、回调地址和授权范围。"
+              }
+            ]
+          },
+          "permission": "application-center:app:list"
+        }
+      ],
+      "features": [
+        {
+          "name": "applications",
+          "featureKey": "applications",
+          "permissions": {
+            "edit": "application-center:app:edit",
+            "grant": "application-center:app:grant",
+            "list": "application-center:app:list"
+          },
+          "routeIds": [
+            "application-center.apps"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.applicationcenter.application.provider.ApplicationQueryDefinitionConfiguration",
+            "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/application/provider/ApplicationQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "application-center.application.list"
+            ]
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.applicationcenter.callrecord.provider.ApplicationCallRecordQueryDefinitionConfiguration",
+            "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/callrecord/provider/ApplicationCallRecordQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "application-center.call-record.list"
+            ]
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.applicationcenter.application.provider.ApplicationTypeOptionProvider",
+            "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/application/provider/ApplicationTypeOptionProvider.java",
+            "code": "application_center_application_type",
+            "name": "应用类型"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.applicationcenter.callrecord.provider.ApplicationCallRecordResultOptionProvider",
+            "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/callrecord/provider/ApplicationCallRecordResultOptionProvider.java",
+            "code": "application_center_call_record_result",
+            "name": "应用调用结果"
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": [
+        {
+          "toolCode": "application.app.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "application.app.scopes.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "application.app.search",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "application.call-record.search",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        }
+      ]
+    },
+    {
+      "moduleKey": "audit",
+      "displayName": "审计",
+      "path": "modules/audit",
+      "aiReadme": "modules/audit/README.ai.md",
+      "description": "审计日志、操作日志、登录日志和数据变更审计展示。",
+      "version": "1.0.0",
+      "maturity": "released",
+      "dependsOn": {
+        "core": [
+          "ai-agent",
+          "audit",
+          "authorization",
+          "error",
+          "module-contracts",
+          "option",
+          "orm-plus",
+          "query"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.audit"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-audit-frontend",
+        "description": "Frontend module package for Buck audit routes, permissions, and feature pages.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-option-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "audit:log:export",
+          "name": "审计日志导出"
+        },
+        {
+          "code": "audit:log:list",
+          "name": "审计日志列表"
+        }
+      ],
+      "menus": [
+        {
+          "code": "audit.logs",
+          "title": "审计日志",
+          "route": "/audit/logs",
+          "permission": "audit:log:list"
+        }
+      ],
+      "pages": [
+        {
+          "id": "audit.logs.list",
+          "featureKey": "logs",
+          "pageLoaderId": "audit.logs.list",
+          "path": "/audit/logs",
+          "title": "审计日志",
+          "eyebrow": "审计 / 日志",
+          "summary": "先缩小筛选范围，再确认单条事件发生了什么。",
+          "messages": {
+            "filterTitle": "审计日志",
+            "categoryFilterLabel": "分类",
+            "categoryFilterAllLabel": "全部分类",
+            "categoryOptionAuthentication": "认证",
+            "categoryOptionAuthorization": "鉴权",
+            "categoryOptionSecuritySetting": "安全配置",
+            "categoryOptionPrincipalSecurity": "主体安全",
+            "categoryOptionSession": "会话",
+            "categoryOptionDataChange": "数据变更",
+            "actionFilterLabel": "动作",
+            "actionPlaceholder": "如 LOGIN / UPDATE / ACCOUNT_UNLOCK",
+            "resultFilterLabel": "结果",
+            "resultFilterAllLabel": "全部结果",
+            "resultSuccessLabel": "成功",
+            "resultFailureLabel": "失败",
+            "operatorFilterLabel": "操作人",
+            "operatorPlaceholder": "用户名或操作人 ID",
+            "traceIdFilterLabel": "链路编号",
+            "traceIdPlaceholder": "按 traceId 精确筛选",
+            "targetTypeFilterLabel": "对象类型",
+            "targetTypePlaceholder": "如 brick_iam_role / brick_iam_principal_account",
+            "targetKeywordFilterLabel": "对象",
+            "targetKeywordPlaceholder": "对象编号或对象名称",
+            "eventTimeFromLabel": "开始时间",
+            "eventTimeToLabel": "结束时间",
+            "pageSizeLabel": "每页条数",
+            "searchButtonLabel": "筛选日志",
+            "resetButtonLabel": "重置条件",
+            "listTitle": "日志列表",
+            "listPageHint": "第 1 页 / 每页 20 条",
+            "loading": "正在加载审计日志...",
+            "empty": "当前筛选条件下没有审计记录。",
+            "loaded": "已加载 {count} 条审计记录，共 {total} 条。",
+            "paginationSummary": "第 {page} 页 · 当前加载 {count} 条，共 {total} 条",
+            "paginationPrevLabel": "上一页",
+            "paginationNextLabel": "下一页",
+            "listCategoryColumn": "分类",
+            "listActionColumn": "动作",
+            "listResultColumn": "结果",
+            "listOperatorColumn": "操作人",
+            "listRequestPathColumn": "请求路径",
+            "listEventTimeColumn": "时间",
+            "detailTitle": "日志详情",
+            "detailEmpty": "请选择一条日志查看详情",
+            "detailViewing": "当前查看事件 {auditLogId}",
+            "categoryLabel": "分类",
+            "actionLabel": "动作",
+            "resultLabel": "结果",
+            "eventTimeLabel": "发生时间",
+            "operatorLabel": "操作人",
+            "traceIdLabel": "链路编号",
+            "requestMethodLabel": "请求方式",
+            "requestPathLabel": "访问路径",
+            "terminalLabel": "终端",
+            "clientIdLabel": "客户端",
+            "remoteAddressLabel": "来源地址",
+            "sourceLabel": "事件来源",
+            "targetTypeLabel": "对象类型",
+            "targetIdLabel": "对象编号",
+            "targetNameLabel": "对象名称",
+            "summaryLabel": "摘要",
+            "reasonLabel": "原因",
+            "userAgentLabel": "User Agent",
+            "fieldChangesTitle": "变更内容",
+            "targetDataTitle": "对象快照",
+            "businessDataTitle": "业务补充信息"
+          },
+          "guide": {
+            "title": "审计日志任务路径",
+            "steps": [
+              {
+                "anchor": "time-presets",
+                "title": "先选时间窗口",
+                "body": "用快捷时间范围快速锁定调查区间，再叠加其它条件。"
+              },
+              {
+                "anchor": "filters",
+                "title": "再缩小事件范围",
+                "body": "按操作者、结果、traceId 和类型筛选，定位问题窗口。"
+              },
+              {
+                "anchor": "list",
+                "title": "打开单条事件",
+                "body": "从列表进入详情，查看「变更前 → 变更后」的字段变化、请求上下文。"
+              },
+              {
+                "anchor": "export",
+                "title": "导出证据",
+                "body": "筛选稳定后导出 CSV，用于合规取证或离线分析。"
+              }
+            ]
+          },
+          "permission": "audit:log:list"
+        }
+      ],
+      "features": [
+        {
+          "name": "logs",
+          "featureKey": "logs",
+          "permissions": {
+            "detail": "audit:log:list",
+            "export": "audit:log:export",
+            "list": "audit:log:list"
+          },
+          "routeIds": [
+            "audit.logs.list"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.audit.log.provider.AuditLogQueryDefinitionConfiguration",
+            "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/provider/AuditLogQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "audit.log.list"
+            ]
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.audit.log.provider.AuditLogCategoryOptionProvider",
+            "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/provider/AuditLogCategoryOptionProvider.java",
+            "code": "audit_log_category",
+            "name": "审计分类"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.audit.log.provider.AuditLogResultOptionProvider",
+            "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/provider/AuditLogResultOptionProvider.java",
+            "code": "audit_log_result",
+            "name": "审计结果"
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": [
+        {
+          "toolCode": "security.audit.detail",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.audit.search",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.audit.summarize",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        }
+      ]
+    },
+    {
+      "moduleKey": "iam",
+      "displayName": "系统管理",
+      "path": "modules/iam",
+      "aiReadme": "modules/iam/README.ai.md",
+      "description": "主体、员工、组织、角色、菜单、当前主体和认证集成。",
+      "version": "1.0.0",
+      "maturity": "released",
+      "dependsOn": {
+        "core": [
+          "ai-agent",
+          "api",
+          "api.frontend",
+          "audit",
+          "authentication",
+          "authorization",
+          "client-meta",
+          "error",
+          "file-resource",
+          "module-contracts",
+          "oauth2",
+          "option",
+          "orm-plus",
+          "query"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.iam"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-iam-frontend",
+        "description": "Frontend module package for Buck IAM routes, permissions, and feature pages.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./auth-experience",
+            "types": "./src/auth-experience.d.ts",
+            "import": "./src/auth-experience.js"
+          },
+          {
+            "subpath": "./auth-state",
+            "types": "./src/auth-state.d.ts",
+            "import": "./src/auth-state.js"
+          },
+          {
+            "subpath": "./auth-view",
+            "types": "./src/auth-view.d.ts",
+            "import": "./src/auth-view.js"
+          },
+          {
+            "subpath": "./auth-workspace",
+            "types": "./src/auth-workspace.d.ts",
+            "import": "./src/auth-workspace.js"
+          },
+          {
+            "subpath": "./current-principal-workspace",
+            "types": "./src/current-principal-workspace.d.ts",
+            "import": "./src/current-principal-workspace.js"
+          },
+          {
+            "subpath": "./management-i18n",
+            "types": "./src/management-i18n.d.ts",
+            "import": "./src/management-i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          },
+          {
+            "subpath": "./role-authorization-workspace",
+            "types": "./src/role-authorization-workspace.d.ts",
+            "import": "./src/role-authorization-workspace.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-authentication-frontend",
+          "@wildbuck/core-authorization-frontend",
+          "@wildbuck/core-client-meta-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-option-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "iam:employee-password:reset",
+          "name": "重置员工密码"
+        },
+        {
+          "code": "iam:employee-role:assign",
+          "name": "分配员工角色"
+        },
+        {
+          "code": "iam:employee:edit",
+          "name": "编辑员工"
+        },
+        {
+          "code": "iam:employee:list",
+          "name": "查看员工列表"
+        },
+        {
+          "code": "iam:employee:unlock",
+          "name": "解锁员工账户"
+        },
+        {
+          "code": "iam:menu:edit",
+          "name": "编辑菜单"
+        },
+        {
+          "code": "iam:menu:list",
+          "name": "查看菜单树"
+        },
+        {
+          "code": "iam:organization:edit",
+          "name": "编辑组织"
+        },
+        {
+          "code": "iam:organization:list",
+          "name": "查看组织树"
+        },
+        {
+          "code": "iam:role:edit",
+          "name": "编辑角色"
+        },
+        {
+          "code": "iam:role:grant",
+          "name": "配置角色授权"
+        },
+        {
+          "code": "iam:role:list",
+          "name": "角色列表"
+        },
+        {
+          "code": "iam:session:invalidate",
+          "name": "强制主体下线"
+        },
+        {
+          "code": "iam:session:view",
+          "name": "查看主体会话"
+        }
+      ],
+      "menus": [
+        {
+          "code": "iam.employees",
+          "title": "员工管理",
+          "route": "/iam/employees",
+          "permission": "iam:employee:list"
+        },
+        {
+          "code": "iam.menus",
+          "title": "菜单管理",
+          "route": "/iam/menus",
+          "permission": "iam:menu:list"
+        },
+        {
+          "code": "iam.organizations",
+          "title": "组织管理",
+          "route": "/iam/organizations",
+          "permission": "iam:organization:list"
+        },
+        {
+          "code": "iam.roles",
+          "title": "角色管理",
+          "route": "/iam/roles",
+          "permission": "iam:role:list"
+        }
+      ],
+      "pages": [
+        {
+          "id": "iam.employees.list",
+          "featureKey": "employees",
+          "pageLoaderId": "iam.employees.list",
+          "path": "/iam/employees",
+          "title": "员工管理",
+          "eyebrow": "系统管理 / 员工管理",
+          "summary": "先筛出目标组织，再处理员工资料和账号角色。",
+          "messages": {
+            "organizationTreeTitle": "组织树",
+            "organizationTreeLoading": "正在加载组织树...",
+            "organizationTreeEmpty": "当前没有组织数据。",
+            "organizationAllActive": "当前显示全部员工。",
+            "organizationFiltered": "当前按组织 {organizationName} 筛选员工。",
+            "allOrganizationsLabel": "全部组织",
+            "listTitle": "员工列表",
+            "loading": "正在加载员工列表...",
+            "empty": "当前没有员工数据。IAM bootstrap 默认会给运维账号创建员工档案；如果这里仍为空，请检查是否关闭了 brick.iam.bootstrap.admin.enabled，或先创建组织后新增员工。",
+            "loaded": "已加载 {count} 条员工记录，共 {total} 条。",
+            "employeeIdColumn": "员工 ID",
+            "organizationNameColumn": "所属组织",
+            "employeeNameColumn": "员工姓名",
+            "phoneNumberColumn": "手机号",
+            "emailColumn": "邮箱",
+            "idCardNumberColumn": "身份证号",
+            "statusColumn": "状态",
+            "enabledLabel": "启用",
+            "disabledLabel": "停用",
+            "roleAssignmentTitle": "员工角色分配",
+            "roleAssignmentIdle": "请选择一条员工记录，查看其账号角色分配。",
+            "roleAssignmentLoading": "正在加载员工角色分配...",
+            "roleAssignmentNoUser": "当前员工未绑定登录账号，无法分配角色。",
+            "roleAssignmentLoaded": "当前正在配置账号 {username} 的角色分配。",
+            "roleAssignmentUsernameLabel": "登录账号",
+            "roleAssignmentAvailableRolesTitle": "可分配角色",
+            "roleAssignmentEffectivePermissionsTitle": "当前生效权限",
+            "roleAssignmentRoleEnabledHint": "启用中",
+            "roleAssignmentRoleDisabledHint": "已停用，不可分配",
+            "roleAssignmentSaveButton": "更新员工角色",
+            "roleAssignmentSaveSuccess": "员工角色分配已更新",
+            "roleAssignmentSaveSuccessWithSessionInvalidation": "员工角色分配已更新，关联旧会话已失效"
+          },
+          "guide": {
+            "title": "员工管理任务路径",
+            "steps": [
+              {
+                "anchor": "filters",
+                "title": "先定位员工",
+                "body": "用组织和关键字缩小范围，先找到要处理的员工。"
+              },
+              {
+                "anchor": "list",
+                "title": "再进入详情",
+                "body": "从列表打开员工，继续处理资料、安全、角色和会话。"
+              },
+              {
+                "anchor": "list",
+                "title": "谨慎处理风险动作",
+                "body": "删除、重置密码、解锁会改变账号状态，完成后看页面反馈。"
+              }
+            ]
+          },
+          "permission": "iam:employee:list"
+        },
+        {
+          "id": "iam.menus.list",
+          "featureKey": "menus",
+          "pageLoaderId": "iam.menus.list",
+          "path": "/iam/menus",
+          "title": "菜单管理",
+          "eyebrow": "系统管理 / 菜单管理",
+          "summary": "先整理菜单树，再处理层级、归属功能和启停状态。",
+          "messages": {
+            "treeTitle": "菜单树",
+            "treeLoading": "正在加载菜单树...",
+            "treeEmpty": "当前还没有菜单数据。",
+            "createButton": "新增菜单",
+            "createChildButton": "新增下级菜单",
+            "detailTitle": "菜单详情",
+            "createTitle": "新增菜单",
+            "idle": "请选择一个菜单，或新建一个根菜单。",
+            "parentLabel": "上级菜单",
+            "functionPointLabel": "归属功能",
+            "permissionLabel": "关联权限资源",
+            "nameLabel": "菜单名称",
+            "iconLabel": "图标",
+            "sortNoLabel": "排序号",
+            "enabledLabel": "启用",
+            "disabledLabel": "停用",
+            "saveButton": "保存菜单",
+            "deleteButton": "删除菜单"
+          },
+          "guide": {
+            "title": "菜单管理任务路径",
+            "steps": [
+              {
+                "anchor": "filters",
+                "title": "先筛菜单树",
+                "body": "按菜单名、功能或状态缩小范围，先找到要维护的节点。"
+              },
+              {
+                "anchor": "list",
+                "title": "按层级阅读",
+                "body": "树表展示父子关系，从行操作进入详情或新增下级。"
+              },
+              {
+                "anchor": "primary-action",
+                "title": "新增前选好层级",
+                "body": "根菜单和下级菜单影响导航结构，保存前确认归属。"
+              }
+            ]
+          },
+          "permission": "iam:menu:list"
+        },
+        {
+          "id": "iam.organizations.list",
+          "featureKey": "organizations",
+          "pageLoaderId": "iam.organizations.list",
+          "path": "/iam/organizations",
+          "title": "组织管理",
+          "eyebrow": "系统管理 / 组织管理",
+          "summary": "先整理组织树，再处理上下级关系、启停状态和删除约束。",
+          "messages": {
+            "treeTitle": "组织树",
+            "treeLoading": "正在加载组织树...",
+            "treeEmpty": "当前还没有组织数据。IAM bootstrap 默认会创建根组织；如果这里仍为空，请检查是否关闭了 brick.iam.bootstrap.admin.enabled，或从这里新增根组织。",
+            "createButton": "新增组织",
+            "createChildButton": "新增下级组织",
+            "detailTitle": "组织详情",
+            "createTitle": "新增组织",
+            "idle": "请选择一个组织，或新建一个根组织。",
+            "parentLabel": "上级组织",
+            "codeLabel": "组织编码",
+            "nameLabel": "组织名称",
+            "sortNoLabel": "排序号",
+            "enabledLabel": "启用",
+            "disabledLabel": "停用",
+            "saveButton": "保存组织",
+            "deleteButton": "删除组织"
+          },
+          "guide": {
+            "title": "组织管理任务路径",
+            "steps": [
+              {
+                "anchor": "filters",
+                "title": "先缩小组织范围",
+                "body": "按名称或状态筛选，快速定位要维护的组织节点。"
+              },
+              {
+                "anchor": "list",
+                "title": "再处理层级",
+                "body": "在树表中进入详情，调整上级、排序和启停状态。"
+              },
+              {
+                "anchor": "primary-action",
+                "title": "新增前确认位置",
+                "body": "新增根组织或下级组织前，先确认它在组织树中的归属。"
+              }
+            ]
+          },
+          "permission": "iam:organization:list"
+        },
+        {
+          "id": "iam.roles.list",
+          "featureKey": "roles",
+          "pageLoaderId": "iam.roles.list",
+          "path": "/iam/roles",
+          "title": "角色管理",
+          "eyebrow": "系统管理 / 角色管理",
+          "summary": "先筛选并找到角色，再处理其定义、启停状态、权限和菜单分配。",
+          "messages": {
+            "listTitle": "角色列表",
+            "loading": "正在加载角色列表...",
+            "empty": "当前没有角色数据。",
+            "loaded": "已加载 {count} 条角色记录，共 {total} 条。",
+            "createButton": "新增角色",
+            "roleIdColumn": "角色 ID",
+            "roleNameColumn": "角色名称",
+            "statusColumn": "状态",
+            "enabledLabel": "启用",
+            "disabledLabel": "停用",
+            "grantTitle": "角色授权",
+            "grantIdle": "请选择一个角色，查看并调整它的权限与菜单。",
+            "grantLoading": "正在加载角色授权详情...",
+            "grantLoaded": "当前正在配置角色 {roleId} 的权限与菜单。",
+            "grantRoleIdLabel": "角色 ID",
+            "grantPermissionsTitle": "权限清单",
+            "grantMenusTitle": "导航菜单",
+            "grantSaveButton": "更新角色授权",
+            "grantSaveSuccess": "角色授权已更新",
+            "grantSaveSuccessWithSessionInvalidation": "角色授权已更新，关联旧会话已失效"
+          },
+          "guide": {
+            "title": "角色管理任务路径",
+            "steps": [
+              {
+                "anchor": "filters",
+                "title": "先定位角色",
+                "body": "用名称和状态筛出目标角色，避免直接改错权限对象。"
+              },
+              {
+                "anchor": "list",
+                "title": "再进入授权",
+                "body": "打开角色详情后，分别维护基础信息、权限和菜单范围。"
+              },
+              {
+                "anchor": "primary-action",
+                "title": "新增角色从这里开始",
+                "body": "新增后再授权，保存会影响使用该角色的账号权限。"
+              }
+            ]
+          },
+          "permission": "iam:role:list"
+        },
+        {
+          "id": "iam.sessions.list",
+          "featureKey": "sessions",
+          "pageLoaderId": "iam.sessions.list",
+          "path": "/iam/sessions",
+          "title": "会话管理",
+          "eyebrow": "系统管理 / 会话管理",
+          "summary": "统一查看主体在线会话状态，并执行单条或按员工的会话下线。",
+          "messages": {
+            "listTitle": "会话管理",
+            "loading": "正在加载会话列表...",
+            "empty": "当前筛选条件下没有会话记录。",
+            "loaded": "已加载 {count} 条会话记录，共 {total} 条。",
+            "keywordPlaceholder": "主体名称或登录账号",
+            "sessionStatusLabel": "会话状态",
+            "authModeLabel": "登录方式",
+            "scopeLabel": "会话范围",
+            "filterButton": "筛选会话",
+            "resetButton": "重置条件",
+            "invalidateSuccess": "会话 {sessionId} 已结束",
+            "invalidateEmployeeSuccess": "该员工的全部会话已结束",
+            "employeeNameColumn": "主体名称",
+            "usernameColumn": "登录账号",
+            "sessionIdColumn": "会话 ID",
+            "sessionStatusColumn": "状态",
+            "authModeColumn": "登录方式",
+            "loggedInAtColumn": "登录时间",
+            "activityAtColumn": "最近活动",
+            "actionColumn": "操作",
+            "invalidateButton": "结束会话",
+            "invalidateEmployeeButton": "结束该员工全部会话"
+          },
+          "guide": {
+            "title": "会话管理任务路径",
+            "steps": [
+              {
+                "anchor": "filters",
+                "title": "先缩小会话范围",
+                "body": "按主体、状态和登录方式筛选，先确认要处理的会话。"
+              },
+              {
+                "anchor": "list",
+                "title": "再结束会话",
+                "body": "单条结束用于精确处置，按员工结束会清理该员工全部会话。"
+              },
+              {
+                "anchor": "list",
+                "title": "下线动作需谨慎",
+                "body": "结束会话会让对应登录态失效，操作后关注列表状态变化。"
+              }
+            ]
+          },
+          "permission": "iam:session:view"
+        }
+      ],
+      "features": [
+        {
+          "name": "currentPrincipal",
+          "featureKey": "current-principal",
+          "permissions": {
+            "detail": "authenticated",
+            "navigation": "authenticated"
+          },
+          "routeIds": []
+        },
+        {
+          "name": "employees",
+          "featureKey": "employees",
+          "permissions": {
+            "assignRole": "iam:employee-role:assign",
+            "edit": "iam:employee:edit",
+            "list": "iam:employee:list",
+            "resetPassword": "iam:employee-password:reset",
+            "unlock": "iam:employee:unlock"
+          },
+          "routeIds": [
+            "iam.employees.list"
+          ]
+        },
+        {
+          "name": "menus",
+          "featureKey": "menus",
+          "permissions": {
+            "edit": "iam:menu:edit",
+            "list": "iam:menu:list"
+          },
+          "routeIds": [
+            "iam.menus.list"
+          ]
+        },
+        {
+          "name": "organizations",
+          "featureKey": "organizations",
+          "permissions": {
+            "edit": "iam:organization:edit",
+            "list": "iam:organization:list"
+          },
+          "routeIds": [
+            "iam.organizations.list"
+          ]
+        },
+        {
+          "name": "roles",
+          "featureKey": "roles",
+          "permissions": {
+            "edit": "iam:role:edit",
+            "grant": "iam:role:grant",
+            "list": "iam:role:list"
+          },
+          "routeIds": [
+            "iam.roles.list"
+          ]
+        },
+        {
+          "name": "sessions",
+          "featureKey": "sessions",
+          "permissions": {
+            "invalidateSingle": "iam:session:invalidate",
+            "invalidateUser": "iam:session:invalidate",
+            "list": "iam:session:view"
+          },
+          "routeIds": [
+            "iam.sessions.list"
+          ]
+        }
+      ],
+      "experiences": {
+        "auth": {
+          "view": {
+            "title": "统一登录",
+            "navTitle": "登录",
+            "eyebrow": "系统管理 / 登录",
+            "summary": "使用账号密码完成第一因子登录；如需二次验证或改密，按页面提示继续。"
+          },
+          "controls": {
+            "loginMethodTitle": "登录方式",
+            "loginMethodValue": "账号密码登录",
+            "loginMethodHint": "当前账号输入固定为用户名；图形验证码只在策略触发后出现。",
+            "firstFactorEyebrow": "第一步 / 首次认证",
+            "firstFactorSummary": "当前只开放账号密码登录，账号录入固定为用户名。",
+            "captchaTitle": "图形验证码",
+            "captchaRefreshButton": "刷新验证码",
+            "captchaPlaceholder": "输入验证码",
+            "captchaAlt": "验证码",
+            "mfaEyebrow": "第二步 / 多因子验证",
+            "mfaStepTitle": "完成二次验证",
+            "mfaStepSummary": "第一因子通过后，需要再完成不同类型的第二因子验证。",
+            "mfaFirstFactorLabel": "第一因子",
+            "mfaFirstFactorValue": "账号密码",
+            "mfaSecondFactorLabel": "第二因子",
+            "mfaSecondFactorValue": "短信验证码或邮箱验证码",
+            "mfaReservedLabel": "预留因子",
+            "mfaSendButton": "发送 MFA 验证码",
+            "mfaCodeLabel": "MFA 验证码",
+            "mfaCodePlaceholder": "输入 MFA 验证码",
+            "mfaCompleteButton": "完成验证",
+            "passwordLifecycleEyebrow": "密码安全处理",
+            "passwordLifecycleTitle": "处理当前密码风险",
+            "passwordLifecycleSummary": "当前密码状态还需要先处理，处理后再继续。",
+            "passwordLifecycleRemindTitle": "密码即将到期",
+            "passwordLifecycleRemindSummary": "当前策略配置为提醒模式，你可以关闭弹窗稍后处理。",
+            "passwordLifecycleSelfServiceTitle": "修改密码",
+            "passwordLifecycleSelfServiceSummary": "请输入当前密码并设置新密码。修改成功后需使用新密码重新登录。",
+            "passwordLifecycleBlockTitle": "请先修改密码",
+            "passwordLifecycleBlockSummary": "当前策略配置为阻断模式，必须先完成改密才能继续使用系统。",
+            "passwordLifecycleScenarioLabel": "当前动作",
+            "passwordLifecycleRemindAction": "弹窗提醒，可关闭",
+            "passwordLifecycleBlockAction": "阻断并必须修改",
+            "passwordLifecycleDismissButton": "稍后处理",
+            "currentPasswordLabel": "当前密码",
+            "currentPasswordPlaceholder": "请输入当前密码",
+            "newPasswordLabel": "新密码",
+            "newPasswordPlaceholder": "请输入新密码",
+            "confirmNewPasswordLabel": "确认新密码",
+            "confirmNewPasswordPlaceholder": "请再次输入新密码",
+            "passwordChangeSubmitButton": "确认修改并继续",
+            "loginSubmitButton": "登录",
+            "panelTitleLogin": "登录到控制台",
+            "panelTitlePassword": "更新当前密码",
+            "panelDescLogin": "请输入账号和登录密码，系统会按安全策略决定是否追加验证码或 MFA。",
+            "panelDescMfaEmail": "完成邮箱验证码校验后，再进入业务会话。",
+            "panelDescMfaSms": "完成短信验证码校验后，再进入业务会话。",
+            "panelDescMfaGeneric": "完成第二因子校验后，再进入业务会话。",
+            "panelDescPasswordBlock": "当前策略要求先修改密码，再继续访问系统。",
+            "panelDescPasswordRemind": "当前密码即将到期，建议现在完成修改。",
+            "panelDescPasswordSelfService": "请输入当前密码并设置新密码。修改成功后需使用新密码重新登录。",
+            "versionLabel": "版本"
+          },
+          "loginModes": {
+            "username-password": {
+              "optionLabel": "账号密码",
+              "title": "账号密码登录",
+              "identityLabel": "账号",
+              "identityPlaceholder": "请输入用户名",
+              "credentialLabel": "登录密码",
+              "credentialPlaceholder": "请输入登录密码",
+              "verificationHint": "输入账号和密码，完成第一因子身份验证。"
+            }
+          },
+          "messages": {
+            "sessionAnonymous": "未登录",
+            "sessionPendingPrincipal": "待二次验证：{username}",
+            "bootstrapMfaPending": "检测到待二次验证会话，请先完成 MFA。",
+            "loginStepPassed": "登录第一步已通过，请完成 MFA 二次验证。",
+            "loginSuccessRequirePasswordChange": "登录成功，但当前密码必须先修改。",
+            "sessionMustChangePassword": "当前会话必须先完成密码修改。",
+            "mfaCodeSentStatus": "已发送 {channel}，请查收后完成 MFA。",
+            "mfaNotRequired": "当前登录无需二次验证。",
+            "mfaComplete": "MFA 校验完成，已进入业务会话。",
+            "passwordChangedRelogin": "密码已修改，请使用新密码重新登录。",
+            "passwordReasonInitialPassword": "当前仍在使用初始密码，请尽快修改。",
+            "passwordReasonInitialPasswordExpired": "初始密码已超过有效期，必须修改密码。",
+            "passwordReasonPeriodicExpired": "密码已超过定期修改周期，必须修改密码。",
+            "passwordReasonAdminReset": "密码已被重置，必须先修改后再继续使用。",
+            "passwordReasonWeakPassword": "当前密码命中弱密码库，必须修改密码。",
+            "passwordExpiredFallback": "密码已到期，请尽快修改密码。",
+            "passwordChangeRequiredFallback": "当前密码需要修改。",
+            "passwordNoticeWithDays": "密码将在 {days} 天后到期，请尽快修改。",
+            "passwordNoticeFallback": "密码即将到期，请尽快修改。",
+            "passwordWarningGeneric": "密码命中风险规则。",
+            "passwordWarningTemplate": "密码预警：{violations}。",
+            "passwordViolationTooShort": "长度过短",
+            "passwordViolationTooLong": "长度过长",
+            "passwordViolationMissingUppercase": "缺少大写字母",
+            "passwordViolationMissingLowercase": "缺少小写字母",
+            "passwordViolationMissingDigit": "缺少数字",
+            "passwordViolationMissingSpecial": "缺少特殊字符",
+            "passwordViolationWeak": "命中弱密码库",
+            "requireLoginError": "请先登录",
+            "bootstrapPasswordChangeRequired": "检测到待改密会话，请先完成密码修改。",
+            "captchaNotRequired": "当前这次登录还不需要验证码。",
+            "captchaLoadingHint": "正在读取验证码策略",
+            "passwordConfirmMismatch": "两次输入的新密码不一致。",
+            "loginFailed": "登录失败。",
+            "loggedOut": "已退出当前会话。",
+            "sessionExpired": "会话已失效，请重新登录后继续。",
+            "sessionLocked": "会话已锁定，请输入密码解锁后继续。",
+            "sessionResumed": "已解锁，可继续当前任务。",
+            "sessionUnlockPasswordRequired": "请输入登录密码。",
+            "captchaTriggeredHint": "验证码已触发，请先完成 {captchaTitle}。",
+            "mfaChannelHint": "本次二次验证通过{channel}完成。",
+            "mfaChannelEmail": "邮箱验证码",
+            "mfaChannelSms": "短信验证码",
+            "listJoinSep": "，"
+          }
+        }
+      },
+      "queryDefinitions": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.iam.employee.provider.EmployeeQueryDefinitionConfiguration",
+            "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/employee/provider/EmployeeQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "iam.employee.list"
+            ]
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.iam.role.provider.RoleQueryDefinitionConfiguration",
+            "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/role/provider/RoleQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "iam.role.list"
+            ]
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.iam.session.provider.SessionQueryDefinitionConfiguration",
+            "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/session/provider/SessionQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "iam.session.list"
+            ]
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.iam.session.provider.SessionAuthenticationModeOptionProvider",
+            "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/session/provider/SessionAuthenticationModeOptionProvider.java",
+            "code": "iam_session_authentication_mode",
+            "name": "会话认证方式"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.iam.session.provider.SessionStatusOptionProvider",
+            "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/session/provider/SessionStatusOptionProvider.java",
+            "code": "iam_session_status",
+            "name": "会话状态"
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": [
+        {
+          "toolCode": "iam.employee.create",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.employee.password.reset",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.employee.role.assign",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.employee.role.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.employee.search",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.employee.unlock",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.function.catalog.explain",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.function.catalog.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.function.detail.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.function.menu.bind",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.function.menu.bindings.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.organization.create",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.organization.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.overview.stats",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.role.search",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "iam.session.invalidate.employee",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "iam.session.search",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        }
+      ]
+    },
+    {
+      "moduleKey": "identity-federation",
+      "displayName": "身份联邦",
+      "path": "modules/identity-federation",
+      "aiReadme": "modules/identity-federation/README.ai.md",
+      "description": "可选身份联邦模块：身份源、通讯录同步中心与身份关联；未采用联邦登录/目录同步的业务可不装配。",
+      "version": "1.0.0",
+      "maturity": "released-candidate",
+      "dependsOn": {
+        "core": [
+          "api",
+          "api.frontend",
+          "audit",
+          "authentication",
+          "authorization",
+          "client-meta",
+          "error",
+          "file-resource",
+          "module-contracts",
+          "oauth2",
+          "option",
+          "orm-plus",
+          "query",
+          "transport"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.identityfederation"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-identity-federation-frontend",
+        "description": "Frontend module package for Buck identity-federation routes and feature pages.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-authorization-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-option-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "identity-federation:authsource:edit",
+          "name": "编辑身份源"
+        },
+        {
+          "code": "identity-federation:authsource:test",
+          "name": "测试身份源连接"
+        },
+        {
+          "code": "identity-federation:authsource:view",
+          "name": "身份源查看"
+        },
+        {
+          "code": "identity-federation:identity-link:manage",
+          "name": "管理身份关联"
+        },
+        {
+          "code": "identity-federation:identity-link:view",
+          "name": "查看身份关联"
+        },
+        {
+          "code": "identity-federation:identity-sync:configure",
+          "name": "配置通讯录同步策略"
+        },
+        {
+          "code": "identity-federation:identity-sync:execute",
+          "name": "执行通讯录同步"
+        },
+        {
+          "code": "identity-federation:identity-sync:view",
+          "name": "查看通讯录同步"
+        }
+      ],
+      "menus": [
+        {
+          "code": "identity-federation.authsource",
+          "title": "身份源",
+          "route": "/identity-federation/auth-sources",
+          "permission": "identity-federation:authsource:view"
+        },
+        {
+          "code": "identity-federation.identity-link",
+          "title": "身份关联",
+          "route": "/identity-federation/identity-link",
+          "permission": "identity-federation:identity-link:view"
+        },
+        {
+          "code": "identity-federation.identity-sync",
+          "title": "身份同步",
+          "route": "/identity-federation/identity-sync",
+          "permission": "identity-federation:identity-sync:view"
+        }
+      ],
+      "pages": [
+        {
+          "id": "identity-federation.authsource.list",
+          "featureKey": "authsource",
+          "pageLoaderId": "identity-federation.authsource.list",
+          "path": "/identity-federation/auth-sources",
+          "title": "身份源",
+          "eyebrow": "系统管理 / 身份源",
+          "summary": "接入企业 OAuth2 身份源，完成回调配置、测试连接后启用联邦登录。",
+          "guide": {
+            "title": "身份源接入任务路径",
+            "steps": [
+              {
+                "anchor": "list",
+                "title": "选择类型并填写配置",
+                "body": "新建时先选 OAuth2.0；把回调 URL 原样配置到 IdP。"
+              },
+              {
+                "anchor": "list",
+                "title": "保存草稿后测试连接",
+                "body": "测试通过才会变为已验证；未验证不能启用。"
+              },
+              {
+                "anchor": "list",
+                "title": "启用后出现在登录页",
+                "body": "启用后业务用户可点「使用 XX 登录」；本地密码登录仍可用。"
+              }
+            ]
+          },
+          "permission": "identity-federation:authsource:view"
+        },
+        {
+          "id": "identity-federation.identity-link",
+          "featureKey": "identitylink",
+          "pageLoaderId": "identity-federation.identity-link",
+          "path": "/identity-federation/identity-link",
+          "title": "身份关联",
+          "eyebrow": "系统管理 / 身份关联",
+          "summary": "将同步暂存的上游身份与本地员工绑定，供扫码登录使用。",
+          "guide": {
+            "title": "身份关联",
+            "steps": [
+              {
+                "anchor": "list",
+                "title": "选择身份源",
+                "body": "先选上游身份源，查看暂存待关联人员。"
+              },
+              {
+                "anchor": "list",
+                "title": "手工或一键关联",
+                "body": "手工选本地员工，或按手机/邮箱唯一命中一键绑定。"
+              },
+              {
+                "anchor": "list",
+                "title": "解除与登录",
+                "body": "绑定写入登录关系后即可扫码登录；可随时解除。"
+              }
+            ]
+          },
+          "permission": "identity-federation:identity-link:view"
+        },
+        {
+          "id": "identity-federation.identity-sync.center",
+          "featureKey": "identitysync",
+          "pageLoaderId": "identity-federation.identity-sync.center",
+          "path": "/identity-federation/identity-sync",
+          "title": "身份同步中心",
+          "eyebrow": "系统管理 / 身份同步中心",
+          "summary": "",
+          "guide": {
+            "title": "身份同步中心",
+            "steps": [
+              {
+                "anchor": "topology",
+                "title": "添加上游",
+                "body": ""
+              },
+              {
+                "anchor": "topology",
+                "title": "配置策略",
+                "body": ""
+              },
+              {
+                "anchor": "topology",
+                "title": "预览写入",
+                "body": ""
+              }
+            ]
+          },
+          "permission": "identity-federation:identity-sync:view"
+        }
+      ],
+      "features": [
+        {
+          "name": "authsource",
+          "featureKey": "authsource",
+          "permissions": {
+            "edit": "identity-federation:authsource:edit",
+            "list": "identity-federation:authsource:view",
+            "test": "identity-federation:authsource:test"
+          },
+          "routeIds": [
+            "identity-federation.authsource.list"
+          ]
+        },
+        {
+          "name": "identitylink",
+          "featureKey": "identitylink",
+          "permissions": {
+            "manage": "identity-federation:identity-link:manage",
+            "view": "identity-federation:identity-link:view"
+          },
+          "routeIds": [
+            "identity-federation.identity-link"
+          ]
+        },
+        {
+          "name": "identitysync",
+          "featureKey": "identitysync",
+          "permissions": {
+            "configure": "identity-federation:identity-sync:configure",
+            "execute": "identity-federation:identity-sync:execute",
+            "view": "identity-federation:identity-sync:view"
+          },
+          "routeIds": [
+            "identity-federation.identity-sync.center"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.identityfederation.authsource.provider.IdentitySourceQueryDefinitionConfiguration",
+            "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/authsource/provider/IdentitySourceQueryDefinitionConfiguration.java",
+            "queryCodes": [
+              "iam.authsource.list"
+            ]
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.identityfederation.authsource.provider.IdentitySourceTypeOptionProvider",
+            "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/authsource/provider/IdentitySourceTypeOptionProvider.java",
+            "code": "iam_identity_source_type",
+            "name": "身份源类型"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.identityfederation.authsource.provider.IdentitySourceVerificationStatusOptionProvider",
+            "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/authsource/provider/IdentitySourceVerificationStatusOptionProvider.java",
+            "code": "iam_identity_source_verification_status",
+            "name": "身份源验证状态"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.identityfederation.identitysync.provider.IdentitySyncOptionProviders",
+            "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/identitysync/provider/IdentitySyncOptionProviders.java",
+            "code": "iam_identity_sync_run_status",
+            "name": "人员落库策略"
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": []
+    },
+    {
+      "moduleKey": "login-brand",
+      "displayName": "登录品牌",
+      "path": "modules/login-brand",
+      "aiReadme": "modules/login-brand/README.ai.md",
+      "description": "登录页系统名称、描述、logo、背景与表单/品牌布局配置（管理功能点）。",
+      "version": "1.0.0",
+      "maturity": "released-candidate",
+      "dependsOn": {
+        "core": [
+          "api",
+          "audit",
+          "authorization",
+          "client-meta",
+          "error",
+          "file-resource",
+          "module-contracts",
+          "orm-plus",
+          "transport"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.loginbrand"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-login-brand-frontend",
+        "description": "Frontend module package for Buck login-brand appearance management.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "login-brand:appearance:manage",
+          "name": "登录外观管理"
+        },
+        {
+          "code": "login-brand:appearance:view",
+          "name": "登录外观查看"
+        }
+      ],
+      "menus": [
+        {
+          "code": "login-brand.appearance",
+          "title": "登录外观",
+          "route": "/login-brand/appearance",
+          "permission": "login-brand:appearance:view"
+        }
+      ],
+      "pages": [
+        {
+          "id": "login-brand.appearance",
+          "featureKey": "appearance",
+          "pageLoaderId": "login-brand.appearance",
+          "path": "/login-brand/appearance",
+          "title": "登录外观",
+          "eyebrow": "登录品牌 / 登录外观",
+          "summary": "登录页系统名称、描述、logo、背景与表单/品牌布局配置。",
+          "permission": "login-brand:appearance:view"
+        }
+      ],
+      "features": [
+        {
+          "name": "appearance",
+          "featureKey": "appearance",
+          "permissions": {
+            "manage": "login-brand:appearance:manage",
+            "view": "login-brand:appearance:view"
+          },
+          "routeIds": [
+            "login-brand.appearance"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "none-found",
+        "source": "java-source-scan",
+        "entries": [],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "none-found",
+        "source": "java-source-scan",
+        "entries": [],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": []
+    },
+    {
+      "moduleKey": "notification-setting",
+      "displayName": "通知配置",
+      "path": "modules/notification-setting",
+      "aiReadme": "modules/notification-setting/README.ai.md",
+      "description": "EMAIL SMTP 提供方配置与邮件通道治理。",
+      "version": "1.0.0",
+      "maturity": "released",
+      "dependsOn": {
+        "core": [
+          "ai-agent",
+          "audit",
+          "authorization",
+          "error",
+          "module-contracts",
+          "notification-mail",
+          "orm-plus",
+          "transport"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.notificationsetting"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-notification-setting-frontend",
+        "description": "Frontend module package for Buck notification setting routes and feature pages.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "notification-setting:email-smtp:manage",
+          "name": "邮件通道配置管理"
+        },
+        {
+          "code": "notification-setting:email-smtp:view",
+          "name": "邮件通道配置查看"
+        }
+      ],
+      "menus": [
+        {
+          "code": "notification-setting.email-smtp",
+          "title": "邮件通道配置",
+          "route": "/notification-setting/email-smtp",
+          "permission": "notification-setting:email-smtp:view"
+        }
+      ],
+      "pages": [
+        {
+          "id": "notification-setting.email-smtp",
+          "featureKey": "email-smtp",
+          "pageLoaderId": "notification-setting.email-smtp",
+          "path": "/notification-setting/email-smtp",
+          "title": "邮件通道配置",
+          "eyebrow": "通知配置 / 邮件通道",
+          "summary": "管理 EMAIL 通道当前生效的 SMTP 提供方配置。",
+          "messages": {
+            "viewTitle": "邮件通道配置",
+            "guideTitle": "邮件通道配置路径"
+          },
+          "guide": {
+            "title": "邮件通道配置路径",
+            "steps": [
+              {
+                "anchor": "summary",
+                "title": "先确认是否启用",
+                "body": "进入页面后先确认邮件通道是否启用，未启用时先打开开关。"
+              },
+              {
+                "anchor": "settings",
+                "title": "再维护 SMTP 配置",
+                "body": "只维护 SMTP 主机、端口、认证账号、认证密码和发件人信息。"
+              },
+              {
+                "anchor": "save-area",
+                "title": "最后保存配置",
+                "body": "保存后即可供 EMAIL MFA 和其他邮件通知复用。"
+              }
+            ]
+          },
+          "permission": "notification-setting:email-smtp:view"
+        }
+      ],
+      "features": [
+        {
+          "name": "emailSmtp",
+          "featureKey": "email-smtp",
+          "permissions": {
+            "manage": "notification-setting:email-smtp:manage",
+            "view": "notification-setting:email-smtp:view"
+          },
+          "routeIds": [
+            "notification-setting.email-smtp"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "none-found",
+        "source": "java-source-scan",
+        "entries": [],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "none-found",
+        "source": "java-source-scan",
+        "entries": [],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": [
+        {
+          "toolCode": "notification.email.smtp.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        }
+      ]
+    },
+    {
+      "moduleKey": "security-setting",
+      "displayName": "安全配置",
+      "path": "modules/security-setting",
+      "aiReadme": "modules/security-setting/README.ai.md",
+      "description": "密码策略、弱密码库、多因子认证、登录安全配置和密码周期。",
+      "version": "1.0.0",
+      "maturity": "released",
+      "dependsOn": {
+        "core": [
+          "ai-agent",
+          "api",
+          "audit",
+          "authentication",
+          "authorization",
+          "cipher",
+          "client-meta",
+          "error",
+          "module-contracts",
+          "notification",
+          "option",
+          "orm-plus",
+          "transport"
+        ]
+      },
+      "contracts": {
+        "api": "contract/api.yaml",
+        "dto": "contract/dto.yaml",
+        "errors": "contract/errors.yaml",
+        "persistence": "contract/persistence.yaml"
+      },
+      "backend": {
+        "migrations": "backend/migrations",
+        "package": "io.github.wu9007.buck.modules.securitysetting"
+      },
+      "frontend": {
+        "packageName": "@wildbuck/module-security-setting-frontend",
+        "description": "Frontend module package for Buck security setting routes, permissions, and feature pages.",
+        "entry": "./src/index.js",
+        "exports": [
+          {
+            "subpath": ".",
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+          },
+          {
+            "subpath": "./i18n",
+            "types": "./src/i18n.d.ts",
+            "import": "./src/i18n.js"
+          },
+          {
+            "subpath": "./page-registry",
+            "types": "./src/page-registry.d.ts",
+            "import": "./src/page-registry.js"
+          },
+          {
+            "subpath": "./settings-page.css",
+            "import": "./src/settings-page.css"
+          }
+        ],
+        "dependencies": [
+          "@wildbuck/core-api-frontend",
+          "@wildbuck/core-i18n-frontend",
+          "@wildbuck/core-option-frontend",
+          "@wildbuck/core-ui-frontend",
+          "@wildbuck/core-usage-event-frontend"
+        ]
+      },
+      "permissions": [
+        {
+          "code": "security-setting:login-security:manage",
+          "name": "登录安全配置管理"
+        },
+        {
+          "code": "security-setting:login-security:view",
+          "name": "登录安全配置查看"
+        },
+        {
+          "code": "security-setting:password-policy:manage",
+          "name": "密码策略管理"
+        },
+        {
+          "code": "security-setting:password-policy:view",
+          "name": "密码策略查看"
+        },
+        {
+          "code": "security-setting:session-token:manage",
+          "name": "会话令牌策略管理"
+        },
+        {
+          "code": "security-setting:session-token:view",
+          "name": "会话令牌策略查看"
+        },
+        {
+          "code": "security-setting:transport-security:manage",
+          "name": "传输安全管理"
+        },
+        {
+          "code": "security-setting:transport-security:view",
+          "name": "传输安全查看"
+        }
+      ],
+      "menus": [
+        {
+          "code": "security-setting.login-security",
+          "title": "登录安全",
+          "route": "/security-setting/login-security",
+          "permission": "security-setting:login-security:view"
+        },
+        {
+          "code": "security-setting.password-policy",
+          "title": "密码策略",
+          "route": "/security-setting/password-policy",
+          "permission": "security-setting:password-policy:view"
+        },
+        {
+          "code": "security-setting.session-token",
+          "title": "会话令牌",
+          "route": "/security-setting/session-token",
+          "permission": "security-setting:session-token:view"
+        },
+        {
+          "code": "security-setting.transport-security",
+          "title": "传输安全",
+          "route": "/security-setting/transport-security",
+          "permission": "security-setting:transport-security:view"
+        }
+      ],
+      "pages": [
+        {
+          "id": "security-setting.login-security",
+          "featureKey": "login-security",
+          "pageLoaderId": "security-setting.login-security",
+          "path": "/security-setting/login-security",
+          "title": "登录安全配置",
+          "eyebrow": "安全配置 / 登录安全",
+          "summary": "管理用户名登录、短信或邮箱多因子认证、验证码能力与登录防护。",
+          "messages": {
+            "viewTitle": "登录安全",
+            "loginMethodsTitle": "登录方式",
+            "accountPasswordEnabledLabel": "账号密码登录",
+            "accountIdentifierLabel": "账号录入支持",
+            "accountIdentifierValue": "用户名",
+            "reservedEmailCodeLabel": "验证码登录（预留）",
+            "captchaTitle": "图形验证码",
+            "captchaEnabledLabel": "启用验证码",
+            "captchaTtlLabel": "验证码有效期",
+            "captchaFailureThresholdLabel": "失败阈值",
+            "captchaFailureWindowLabel": "统计窗口",
+            "loginFailureFreezeEnabledLabel": "启用失败冻结",
+            "loginFailureWindowLabel": "失败统计窗口",
+            "loginFailureMaxFailuresLabel": "最大失败次数",
+            "loginFailureLockMinutesLabel": "冻结时长",
+            "loginFailureRuleHint": "x 分钟内失败 x 次冻结 x 分钟",
+            "mfaEnabledLabel": "启用多因子认证",
+            "mfaFirstFactorLabel": "第一因子",
+            "mfaFirstFactorValue": "账号密码",
+            "mfaSecondFactorLabel": "第二因子",
+            "mfaSecondFactorValue": "短信验证码或邮箱验证码",
+            "verificationCodeTitle": "动态口令控制",
+            "verificationCodeTtlLabel": "验证码有效期",
+            "verificationCodeSendWindowLabel": "发送窗口",
+            "verificationCodeMaxSendsLabel": "窗口内最大发送次数",
+            "submitLabel": "保存登录安全",
+            "saveSuccess": "登录安全已保存"
+          },
+          "guide": {
+            "title": "登录安全配置任务路径",
+            "steps": [
+              {
+                "anchor": "posture",
+                "title": "先看登录安全态势",
+                "body": "态势综合 MFA、失败冻结、验证码与动态口令缺口，优先补齐关键风险。"
+              },
+              {
+                "anchor": "summary",
+                "title": "再看策略卡片",
+                "body": "状态组用于快速判断验证码、冻结和多因子认证是否已经生效。"
+              },
+              {
+                "anchor": "settings",
+                "title": "再调整登录防护",
+                "body": "按登录方式、验证码、冻结、多因子认证分组修改，避免混淆密码策略。"
+              },
+              {
+                "anchor": "save-area",
+                "title": "保存后立即影响登录",
+                "body": "保存会改变登录链路，提交前确认阈值和启停状态。"
+              }
+            ]
+          },
+          "permission": "security-setting:login-security:view"
+        },
+        {
+          "id": "security-setting.password-policy",
+          "featureKey": "password-policy",
+          "pageLoaderId": "security-setting.password-policy",
+          "path": "/security-setting/password-policy",
+          "title": "密码策略",
+          "eyebrow": "安全配置 / 密码策略",
+          "summary": "管理密码强度、弱密码、初始密码和密码生命周期动作。",
+          "messages": {
+            "viewTitle": "密码策略",
+            "strengthEnabledLabel": "启用强度规则",
+            "minLengthLabel": "最小长度",
+            "requireUppercaseLabel": "大写字母",
+            "requireLowercaseLabel": "小写字母",
+            "requireDigitLabel": "数字",
+            "requireSpecialLabel": "特殊字符",
+            "excludeUsernameLabel": "排除用户名",
+            "excludePhoneLabel": "排除手机号",
+            "excludeEmailLabel": "排除邮箱",
+            "initialPasswordEnabledLabel": "启用初始密码策略",
+            "initialPasswordValidDaysLabel": "初始密码有效天数",
+            "passwordLifecycleTitle": "密码生命周期控制",
+            "periodicChangeEnabledLabel": "启用周期改密",
+            "periodicChangeDaysLabel": "周期天数",
+            "periodicChangeNoticeDaysLabel": "到期前提醒天数",
+            "expiringSoonActionLabel": "密码即将到期",
+            "expiredActionLabel": "密码已到期",
+            "initialPasswordActionLabel": "初始密码",
+            "adminResetActionLabel": "管理员重置密码",
+            "actionRemindLabel": "弹窗提醒，可关闭",
+            "actionBlockLabel": "阻断并必须修改",
+            "noRepeatCycleEnabledLabel": "启用历史重复限制",
+            "noRepeatCycleTimesLabel": "近 N 次不可重复",
+            "weakPasswordEnabledLabel": "启用弱密码库",
+            "weakPasswordsLabel": "弱密码",
+            "submitLabel": "保存密码策略",
+            "saveSuccess": "密码策略已保存"
+          },
+          "guide": {
+            "title": "密码策略任务路径",
+            "steps": [
+              {
+                "anchor": "posture",
+                "title": "先看密码策略态势",
+                "body": "态势综合强度、弱密码库、历史重复与到期处置，优先补齐关键缺口。"
+              },
+              {
+                "anchor": "summary",
+                "title": "再确认策略卡片",
+                "body": "状态组帮助判断强度、弱密码、初始密码和生命周期是否启用。"
+              },
+              {
+                "anchor": "settings",
+                "title": "再维护密码规则",
+                "body": "按强度、弱密码、初始密码和周期控制逐组调整。"
+              },
+              {
+                "anchor": "save-area",
+                "title": "保存会影响改密结果",
+                "body": "保存后新密码校验和强制改密动作会按新策略执行。"
+              }
+            ]
+          },
+          "permission": "security-setting:password-policy:view"
+        },
+        {
+          "id": "security-setting.session-token",
+          "featureKey": "session-token",
+          "pageLoaderId": "security-setting.session-token",
+          "path": "/security-setting/session-token",
+          "title": "会话令牌策略",
+          "eyebrow": "安全配置 / 会话令牌",
+          "summary": "管理访问令牌寿命、静默续期与过期处理策略。",
+          "messages": {
+            "viewTitle": "会话令牌",
+            "submitLabel": "保存会话令牌策略"
+          },
+          "guide": {
+            "title": "会话令牌策略任务路径",
+            "steps": [
+              {
+                "anchor": "posture",
+                "title": "先看会话令牌态势",
+                "body": "态势综合部署密钥、续期窗口与静默续期开关，优先补齐关键缺口。"
+              },
+              {
+                "anchor": "summary",
+                "title": "再看策略卡片",
+                "body": "按访问寿命、静默续期与过期处理分片查看当前状态与风险。"
+              },
+              {
+                "anchor": "settings",
+                "title": "再调整策略分片",
+                "body": "打开对应卡片抽屉修改字段子集，避免一次堆叠全部配置。"
+              },
+              {
+                "anchor": "save-area",
+                "title": "保存后影响新签发令牌",
+                "body": "保存对新登录签发的令牌生效；已在线会话仍按签发时的时长失效。"
+              }
+            ]
+          },
+          "permission": "security-setting:session-token:view"
+        },
+        {
+          "id": "security-setting.transport-security",
+          "featureKey": "transport-security",
+          "pageLoaderId": "security-setting.transport-security",
+          "path": "/security-setting/transport-security",
+          "title": "传输安全配置",
+          "eyebrow": "安全配置 / 传输安全",
+          "summary": "管理当前软国密传输、受保护地址正则、明文拒绝策略与重放保护窗口。",
+          "messages": {
+            "viewTitle": "传输安全",
+            "enabledLabel": "启用传输安全",
+            "implementationLabel": "当前实现",
+            "implementationValue": "软国密（SM2/SM3/SM4）",
+            "rejectPlaintextLabel": "拒绝明文请求",
+            "metadataHeaderNameLabel": "元数据请求头",
+            "encryptResponseLabel": "加密响应",
+            "protectedUrlRegexesLabel": "受保护地址正则",
+            "requestDigestEnabledLabel": "启用请求摘要",
+            "requestDigestAlgorithmLabel": "摘要算法",
+            "requestDigestHeaderNameLabel": "摘要请求头",
+            "requestDigestProtectedHeadersLabel": "参与摘要的请求头",
+            "requestDigestPermitUrlRegexesLabel": "摘要放行地址正则",
+            "timestampSkewSecondsLabel": "时间偏差窗口(秒)",
+            "replayProtectionEnabledLabel": "启用重放防护",
+            "replayTtlSecondsLabel": "重放缓存窗口(秒)",
+            "submitLabel": "保存传输安全",
+            "saveSuccess": "传输安全已保存"
+          },
+          "guide": {
+            "title": "传输安全配置任务路径",
+            "steps": [
+              {
+                "anchor": "posture",
+                "title": "先看传输安全态势",
+                "body": "确认总开关、明文策略、请求摘要和防重放是否留下生产缺口。"
+              },
+              {
+                "anchor": "summary",
+                "title": "再确认各策略卡片",
+                "body": "状态组显示传输安全、明文拒绝和重放防护是否生效。"
+              },
+              {
+                "anchor": "settings",
+                "title": "再配置保护范围",
+                "body": "在受保护地址正则中维护接口范围，留空会回到默认规则。"
+              },
+              {
+                "anchor": "save-area",
+                "title": "保存前确认影响面",
+                "body": "正则与请求头会先校验；新增规则会要求命中接口使用传输信封，保存后立即生效。"
+              }
+            ]
+          },
+          "permission": "security-setting:transport-security:view"
+        }
+      ],
+      "features": [
+        {
+          "name": "loginSecurity",
+          "featureKey": "login-security",
+          "permissions": {
+            "manage": "security-setting:login-security:manage",
+            "view": "security-setting:login-security:view"
+          },
+          "routeIds": [
+            "security-setting.login-security"
+          ]
+        },
+        {
+          "name": "passwordPolicy",
+          "featureKey": "password-policy",
+          "permissions": {
+            "manage": "security-setting:password-policy:manage",
+            "view": "security-setting:password-policy:view"
+          },
+          "routeIds": [
+            "security-setting.password-policy"
+          ]
+        },
+        {
+          "name": "sessionToken",
+          "featureKey": "session-token",
+          "permissions": {
+            "manage": "security-setting:session-token:manage",
+            "view": "security-setting:session-token:view"
+          },
+          "routeIds": [
+            "security-setting.session-token"
+          ]
+        },
+        {
+          "name": "transportSecurity",
+          "featureKey": "transport-security",
+          "permissions": {
+            "manage": "security-setting:transport-security:manage",
+            "view": "security-setting:transport-security:view"
+          },
+          "routeIds": [
+            "security-setting.transport-security"
+          ]
+        }
+      ],
+      "experiences": {},
+      "queryDefinitions": {
+        "status": "none-found",
+        "source": "java-source-scan",
+        "entries": [],
+        "limitations": [
+          "Static Java source scan records contributing classes and stable query codes only.",
+          "Field whitelist, operators, default sorters and maxPageSize are in .brick/query-option-index.json. Incomplete codes must not be treated as a full field contract.",
+          "Runtime BrickQueryDefinition Spring bean runtime still enforces the live query protocol."
+        ]
+      },
+      "optionProviders": {
+        "status": "partial-static",
+        "source": "java-source-scan",
+        "entries": [
+          {
+            "className": "io.github.wu9007.buck.modules.securitysetting.login.provider.LoginMfaModeOptionProvider",
+            "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/login/provider/LoginMfaModeOptionProvider.java",
+            "code": "security_setting_login_mfa_mode",
+            "name": "登录 MFA 默认模式"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.securitysetting.password.provider.PasswordLifecycleActionOptionProvider",
+            "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/password/provider/PasswordLifecycleActionOptionProvider.java",
+            "code": "security_setting_password_lifecycle_action",
+            "name": "密码生命周期动作"
+          },
+          {
+            "className": "io.github.wu9007.buck.modules.securitysetting.transport.provider.RequestDigestAlgorithmOptionProvider",
+            "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/transport/provider/RequestDigestAlgorithmOptionProvider.java",
+            "code": "security_setting_transport_digest_algorithm",
+            "name": "请求摘要算法"
+          }
+        ],
+        "limitations": [
+          "Static Java source scan records contributing BrickOptionProvider classes and stable option codes only.",
+          "Stable option items are in .brick/query-option-index.json when schemaStatus=complete.",
+          "Runtime BrickOptionProvider still provides live option values."
+        ]
+      },
+      "aiTools": [
+        {
+          "toolCode": "security.login.applyUpdate",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "security.login.explain",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.login.proposeUpdate",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.login.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.password.applyUpdate",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "security.password.explain",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.password.proposeUpdate",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.password.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.transport.applyUpdate",
+          "writeOperation": true,
+          "executionPolicy": "ASK"
+        },
+        {
+          "toolCode": "security.transport.explain",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.transport.proposeUpdate",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        },
+        {
+          "toolCode": "security.transport.read",
+          "writeOperation": false,
+          "executionPolicy": "ALLOW"
+        }
+      ]
+    }
+  ],
+  "released": [
+    "modules:application-center",
+    "modules:audit",
+    "modules:iam",
+    "modules:notification-setting",
+    "modules:security-setting"
+  ],
+  "releasedCandidate": [
+    "modules:ai-assistant",
+    "modules:identity-federation",
+    "modules:login-brand"
+  ],
+  "coreFrontendPackages": [
+    {
+      "capabilityKey": "core:api",
+      "path": "core/api/frontend",
+      "packageName": "@wildbuck/core-api-frontend",
+      "description": "Frontend API client runtime for Buck generated SDKs.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": [
+        "@wildbuck/core-transport-frontend"
+      ]
+    },
+    {
+      "capabilityKey": "core:authentication",
+      "path": "core/authentication/frontend",
+      "packageName": "@wildbuck/core-authentication-frontend",
+      "description": "Frontend authentication runtime for Buck login transport and auth request flows.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": [
+        "@wildbuck/core-transport-frontend",
+        "sm-crypto"
+      ]
+    },
+    {
+      "capabilityKey": "core:authorization",
+      "path": "core/authorization/frontend",
+      "packageName": "@wildbuck/core-authorization-frontend",
+      "description": "Frontend authorization and module navigation helpers for Buck upper applications.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityKey": "core:client-meta",
+      "path": "core/client-meta/frontend",
+      "packageName": "@wildbuck/core-client-meta-frontend",
+      "description": "Frontend runtime metadata helpers for Buck browser bootstrap.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": [
+        "@wildbuck/core-api-frontend"
+      ]
+    },
+    {
+      "capabilityKey": "core:i18n",
+      "path": "core/i18n/frontend",
+      "packageName": "@wildbuck/core-i18n-frontend",
+      "description": "Frontend locale runtime and message helpers for Buck i18n.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityKey": "core:option",
+      "path": "core/option/frontend",
+      "packageName": "@wildbuck/core-option-frontend",
+      "description": "Frontend option loading helpers for Buck core option.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": [
+        "@wildbuck/core-api-frontend"
+      ]
+    },
+    {
+      "capabilityKey": "core:query",
+      "path": "core/query/frontend",
+      "packageName": "@wildbuck/core-query-frontend",
+      "description": "Frontend QueryCriteria builders for Buck core query.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityKey": "core:transport",
+      "path": "core/transport/frontend",
+      "packageName": "@wildbuck/core-transport-frontend",
+      "description": "Frontend transport digest helpers for Buck applications.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityKey": "core:ui",
+      "path": "core/ui/frontend",
+      "packageName": "@wildbuck/core-ui-frontend",
+      "description": "Reusable console shell components and theme presets for Buck business applications.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        },
+        {
+          "subpath": "./appearance",
+          "types": "./src/appearance.d.ts",
+          "import": "./src/appearance.js"
+        },
+        {
+          "subpath": "./download",
+          "types": "./src/download.d.ts",
+          "import": "./src/download.js"
+        },
+        {
+          "subpath": "./fields",
+          "types": "./src/fields.d.ts",
+          "import": "./src/fields.js"
+        },
+        {
+          "subpath": "./i18n",
+          "types": "./src/i18n.d.ts",
+          "import": "./src/i18n.js"
+        },
+        {
+          "subpath": "./list-panel.css",
+          "import": "./src/list-panel.css"
+        },
+        {
+          "subpath": "./patterns",
+          "types": "./src/patterns.d.ts",
+          "import": "./src/patterns.js"
+        },
+        {
+          "subpath": "./pwa",
+          "types": "./src/pwa-install.d.ts",
+          "import": "./src/pwa-install.js"
+        },
+        {
+          "subpath": "./session-recovery-ui",
+          "types": "./src/session-recovery-ui.d.ts",
+          "import": "./src/session-recovery-ui.js"
+        },
+        {
+          "subpath": "./settings-page.css",
+          "import": "./src/settings-page.css"
+        },
+        {
+          "subpath": "./shell",
+          "types": "./src/shell.d.ts",
+          "import": "./src/shell.js"
+        },
+        {
+          "subpath": "./shell-navigation",
+          "types": "./src/shell-navigation.d.ts",
+          "import": "./src/shell-navigation.js"
+        },
+        {
+          "subpath": "./status",
+          "types": "./src/status.d.ts",
+          "import": "./src/status.js"
+        },
+        {
+          "subpath": "./theme",
+          "types": "./src/theme.d.ts",
+          "import": "./src/theme.js"
+        },
+        {
+          "subpath": "./theme.css",
+          "import": "./src/theme.css"
+        },
+        {
+          "subpath": "./workspace-profile",
+          "types": "./src/workspace-profile.d.ts",
+          "import": "./src/workspace-profile.js"
+        }
+      ],
+      "dependencies": [
+        "@wildbuck/core-api-frontend",
+        "@wildbuck/core-i18n-frontend"
+      ]
+    },
+    {
+      "capabilityKey": "core:usage-event",
+      "path": "core/usage-event/frontend",
+      "packageName": "@wildbuck/core-usage-event-frontend",
+      "description": "Frontend usage event helpers for Buck product analytics collection.",
+      "entry": "./src/index.js",
+      "exports": [
+        {
+          "subpath": ".",
+          "types": "./src/index.d.ts",
+          "import": "./src/index.js"
+        }
+      ],
+      "dependencies": [
+        "@wildbuck/core-api-frontend",
+        "@wildbuck/core-client-meta-frontend"
+      ]
+    }
+  ],
+  "capabilityAdoption": [
+    {
+      "key": "starter:application",
+      "layer": "starter",
+      "title": "上层业务应用启动与默认装配",
+      "triggers": [
+        "新建或升级独立上层业务后端应用。",
+        "业务应用需要获得 Buck 默认鉴权、传输、ORM、观测和模块自动装配；认证与 IAM 不随 starter 进入。"
+      ],
+      "reuse": [
+        "后端依赖 io.github.wu9007:buck-starter-application 和 buck-bom。",
+        "以发布资料包 templates/backend-minimal 为启动基线，再按业务采用决策开启正式模块。"
+      ],
+      "forbidden": [
+        "通过 Gradle project/includeBuild 直连 brick-next 源码。",
+        "复制 starter 自动配置或在业务仓库维护第二套启动壳。"
+      ],
+      "whenNot": [
+        "只改已有业务切片、不新建或升级独立后端应用时。",
+        "验证壳或框架仓本身不是业务启动面。"
+      ],
+      "documentation": [
+        {
+          "path": "README.md"
+        },
+        {
+          "path": "dependencies/backend.md"
+        },
+        {
+          "path": "templates/backend-minimal/build.gradle"
+        }
+      ],
+      "tags": [
+        "starter",
+        "bootstrap"
+      ],
+      "preconditions": [
+        "业务仓通过 BOM + starter 引用发布物，不 includeBuild 框架源码"
+      ],
+      "sideEffects": [
+        "装配默认 ORM/query/option/authorization/observability/client-meta"
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-starter-application"
+      }
+    },
+    {
+      "key": "core:api",
+      "layer": "core",
+      "title": "统一响应信封、DTO 映射与前端 request<T>()",
+      "triggers": [
+        "HTTP API 需要统一成功/失败信封、BrickApiResponse 或生成 SDK 解封成功载荷。",
+        "前后端需要共享 BrickPrincipal、BrickDtoMapper 或日期时间序列化出口。"
+      ],
+      "reuse": [
+        "后端使用 BrickApiResponse / BrickResponseResult，不要另造 envelope。",
+        "前端使用 @wildbuck/core-api-frontend 的 request<T>() 解封成功载荷，会话级错误走统一 handler。"
+      ],
+      "forbidden": [
+        "在业务仓再包一层成功响应信封，或让前端解析未解封的 {success,data}。",
+        "在 controller / mapper 里把日期时间提前格式化成 String。"
+      ],
+      "whenNot": [
+        "不要另造响应 envelope，或在 request<T>() 已解封后再包一层成功载荷。",
+        "纯内部非 HTTP 批任务、不暴露 Buck API 时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "api",
+        "http"
+      ],
+      "preconditions": [
+        "HTTP API 使用 Buck 成功信封；前端走 request<T>()"
+      ],
+      "sideEffects": [],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-api",
+        "npm": "@wildbuck/core-api-frontend"
+      }
+    },
+    {
+      "key": "core:error",
+      "layer": "core",
+      "title": "统一错误模型、异常响应与 error-catalog",
+      "triggers": [
+        "业务异常需要稳定错误码、HTTP 状态、recovery 或默认异常响应。",
+        "前端需要展示服务端已本地化的错误文案，而不是裸状态码。"
+      ],
+      "reuse": [
+        "通过 starter 装配 core:error；模块错误码写在 contract/errors.yaml，由 error-catalog 与生成枚举进入响应链。",
+        "用户可见文案使用服务端 message / i18n，不要把裸 HTTP status 当提示。"
+      ],
+      "forbidden": [
+        "在业务模块自造平行错误协议、魔法字符串错误码或本地异常包装。",
+        "把 token、密码或请求体明文写入异常日志。"
+      ],
+      "whenNot": [
+        "不要把裸 HTTP status 或异常类名当作用户文案。",
+        "不要在前端硬编码错误码译文替代 contract/errors.yaml 与 error-catalog。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "error"
+      ],
+      "preconditions": [
+        "starter 已装配 core:error",
+        "模块错误码写在 contract/errors.yaml"
+      ],
+      "sideEffects": [
+        "默认异常响应包装 HTTP 错误信封"
+      ],
+      "errors": [
+        "BRICK_INTERNAL_ERROR",
+        "BRICK_REQUEST_PARAMETER_INVALID"
+      ],
+      "failureModes": [
+        {
+          "code": "BRICK_INTERNAL_ERROR",
+          "retryable": true,
+          "recovery": "请稍后重试，若仍失败请联系管理员。"
+        },
+        {
+          "code": "BRICK_REQUEST_PARAMETER_INVALID",
+          "retryable": false,
+          "recovery": "检查请求参数后重试。"
+        }
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-error"
+      }
+    },
+    {
+      "key": "core:query",
+      "layer": "core",
+      "title": "列表筛选、分页、排序和查询 DSL",
+      "triggers": [
+        "页面或 API 调用方需要传入筛选、分页、排序或条件查询 DSL。",
+        "业务列表需要稳定 queryCode、字段白名单、操作符白名单和排序边界。"
+      ],
+      "reuse": [
+        "后端注册 BrickQueryDefinition，并通过 QueryCriteria 和 BrickQueryExecutor 执行。",
+        "前端使用 @wildbuck/core-query-frontend 构造查询 DSL，筛选工具条布局复用 @wildbuck/core-ui-frontend/patterns。"
+      ],
+      "forbidden": [
+        "每个接口自定义分页、排序、筛选协议。",
+        "在 Controller 或 Service 中用 MyBatis-Plus wrapper 接收前端可控 like/orderBy/selectPage。"
+      ],
+      "whenNot": [
+        "单条详情、命令型写接口，或调用方不传筛选、分页、排序时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "query",
+        "list"
+      ],
+      "preconditions": [
+        "实体已注册 BrickQueryDefinition",
+        "走 core:orm-plus 实体"
+      ],
+      "sideEffects": [],
+      "errors": [
+        "BRICK_REQUEST_PARAMETER_INVALID",
+        "BRICK_FORBIDDEN"
+      ],
+      "failureModes": [
+        {
+          "code": "BRICK_REQUEST_PARAMETER_INVALID",
+          "retryable": false,
+          "recovery": "检查请求参数后重试。"
+        },
+        {
+          "code": "BRICK_FORBIDDEN",
+          "retryable": false,
+          "recovery": "联系管理员开通权限。"
+        }
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-query",
+        "npm": "@wildbuck/core-query-frontend"
+      }
+    },
+    {
+      "key": "core:option",
+      "layer": "core",
+      "title": "下拉、单选、多选、标签和字典选项",
+      "triggers": [
+        "页面或 API 需要下拉、单选、多选、标签、枚举或字典选项。",
+        "选项值需要由后端统一提供、排序或扩展参数。"
+      ],
+      "reuse": [
+        "后端实现 BrickOptionProvider 并发布稳定 optionCode。",
+        "前端使用 @wildbuck/core-option-frontend 加载 /brick/options/list，不在页面写静态选项数组。"
+      ],
+      "forbidden": [
+        "在 Vue 页面硬编码静态 el-option。",
+        "在业务 controller 中散落枚举选项接口。"
+      ],
+      "whenNot": [
+        "纯自由文本、数值或日期输入，不是下拉、单选、多选或标签时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "option"
+      ],
+      "preconditions": [
+        "实现 BrickOptionProvider 并发布稳定 optionCode"
+      ],
+      "sideEffects": [],
+      "errors": [
+        "BRICK_REQUEST_PARAMETER_INVALID",
+        "BRICK_FORBIDDEN"
+      ],
+      "failureModes": [
+        {
+          "code": "BRICK_REQUEST_PARAMETER_INVALID",
+          "retryable": false,
+          "recovery": "检查请求参数后重试。"
+        },
+        {
+          "code": "BRICK_FORBIDDEN",
+          "retryable": false,
+          "recovery": "联系管理员开通权限。"
+        }
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-option",
+        "npm": "@wildbuck/core-option-frontend"
+      }
+    },
+    {
+      "key": "core:ui",
+      "layer": "core",
+      "title": "控制台壳、字段模式、页面模式和主题 token",
+      "triggers": [
+        "控制台需要 shell、页眉、筛选条、列表动作位、抽屉或主题 token。",
+        "模块页面需要复用已发布字段模式或页面模式，而不是复制验证壳。"
+      ],
+      "reuse": [
+        "前端依赖 @wildbuck/core-ui-frontend 的 ./shell、./fields、./patterns 和 theme.css。",
+        "页眉、筛选条、密钥复制、图片上传和抽屉先扩 core-ui，再让模块消费。"
+      ],
+      "forbidden": [
+        "复制 validation/security-console 壳实现，或平行 ConsolePageHeader / ConsoleMetricCard / ConsoleFilterBar。",
+        "在 modules 内再造 shared/console 页面方言。"
+      ],
+      "whenNot": [
+        "不要复制 validation 壳或平行 Console* 组件。",
+        "非控制台页面、不需要 shell、页眉、筛选条或主题 token 时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "business-frontend-page-patterns.md"
+        },
+        {
+          "path": "business-module-adoption-reference.md"
+        }
+      ],
+      "tags": [
+        "ui",
+        "shell"
+      ],
+      "preconditions": [
+        "前端依赖 @wildbuck/core-ui-frontend，不复制 validation 壳"
+      ],
+      "sideEffects": [],
+      "defaultOn": false,
+      "coordinates": {
+        "npm": "@wildbuck/core-ui-frontend"
+      }
+    },
+    {
+      "key": "core:i18n",
+      "layer": "core",
+      "title": "国际化 locale 协议与消息解析",
+      "triggers": [
+        "业务壳需要统一语言偏好、前端文案 runtime 或与后端 MessageSource 对齐。",
+        "API 需要按请求 locale 返回错误文案或其它本地化内容。"
+      ],
+      "reuse": [
+        "后端通过 starter 装配 core:i18n：MessageSource、BrickAcceptHeaderLocaleResolver（优先 X-Brick-Locale，再 Accept-Language）、BrickMessageResolver。",
+        "前端使用 @wildbuck/core-i18n-frontend 的 createBrickI18nRuntime、normalizeBrickLocale，并用 configureHttp({ localeProvider }) 注入 Accept-Language 与 X-Brick-Locale。",
+        "用户偏好本里程碑使用 appearance.locale 本机真源；词条由 core/module 分层 registerMessages，业务错误正文优先展示服务端已本地化 message。"
+      ],
+      "forbidden": [
+        "在 validation 或业务页自造第二套 i18n 库或平行 locale 协议。",
+        "前后端各维护一套业务错误码译文并长期双源漂移。",
+        "仅改 Element Plus locale 却宣称全站多语言已完成。"
+      ],
+      "whenNot": [
+        "确认单语种且不需要对齐前后端 locale 协议时。"
+      ],
+      "documentation": [
+        {
+          "path": "core/i18n/README.md"
+        },
+        {
+          "path": "core/i18n/frontend/README.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        }
+      ],
+      "tags": [
+        "i18n"
+      ],
+      "preconditions": [
+        "starter 已装配 core:i18n"
+      ],
+      "sideEffects": [],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-i18n",
+        "npm": "@wildbuck/core-i18n-frontend"
+      }
+    },
+    {
+      "key": "core:observability",
+      "layer": "core",
+      "title": "生产排障 traceId、MDC、请求完成日志与最小 HTTP 指标",
+      "triggers": [
+        "业务需要请求链路 traceId、响应头 trace-id、MDC 或请求完成日志。",
+        "排查生产问题需要在业务日志中读取当前请求 traceId。",
+        "需要稳定低基数 HTTP 请求计数与耗时指标（brick.http.server.*）。"
+      ],
+      "reuse": [
+        "通过 starter 默认装配 core:observability。",
+        "业务代码只在需要时读取 BrickTraceContext.currentTraceId()。",
+        "业务后端日志配置采用 release bundle 的 logback-spring.xml 模板，主日志 pattern 保留 %X{traceId}。",
+        "需要抓取指标时由上层装配 MeterRegistry（如 Actuator + Prometheus），使用 brick.http.server.requests / request.duration。"
+      ],
+      "forbidden": [
+        "自建 TraceIdFilter、RequestLoggingFilter 或请求/响应 body 日志。",
+        "在业务仓库维护本地 observability 子系统。",
+        "继续使用历史 %X{logRequestId} 作为 Buck 请求标识。",
+        "为 Buck HTTP 指标增加 path/token 等高基数标签。"
+      ],
+      "whenNot": [
+        "本地一次性脚本，或不需要生产排障 traceId 时。"
+      ],
+      "documentation": [
+        {
+          "path": "capabilities/observability.md"
+        },
+        {
+          "path": "templates/backend-minimal/src/main/resources/logback-spring.xml"
+        },
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "upper-application-development-guide.md"
+        },
+        {
+          "path": "rules/forbidden-patterns.md"
+        }
+      ],
+      "tags": [
+        "observability"
+      ],
+      "preconditions": [
+        "使用发布资料包 Logback 基线并保留 %X{traceId}"
+      ],
+      "sideEffects": [
+        "写进程内 HTTP 完成日志和可选低基数指标"
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-observability"
+      }
+    },
+    {
+      "key": "core:client-meta",
+      "layer": "core",
+      "title": "浏览器启动公开运行时元数据",
+      "triggers": [
+        "业务前端壳需要统一读取 Buck core 能力的浏览器公开启动配置。",
+        "前端需要知道 usage-event 等能力是否启用、公开 schema 版本和公开 endpoint。"
+      ],
+      "reuse": [
+        "后端通过 starter 获得 core:client-meta，GET /brick/client-meta 聚合 BrickClientMetaContributor 公开片段。",
+        "前端使用 @wildbuck/core-client-meta-frontend 的 loadBrickClientMeta 和 bootstrapBrickClient，再由具体 core 前端包完成能力初始化。",
+        "usage-event 前端默认通过 client-meta bootstrap，不在业务壳重复维护 enabled/appCode/endpoint。"
+      ],
+      "forbidden": [
+        "在业务仓库自建平行 client meta endpoint、配置中心或前端启动配置协议。",
+        "通过 client-meta 返回 secret、token、password、credential、connection string、内部策略明文、请求体、表单内容或业务对象明文。",
+        "用 client-meta 替代 /transport/meta 传输安全预检兼容接口。"
+      ],
+      "whenNot": [
+        "纯后端批任务、没有浏览器启动壳时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "client-meta",
+        "bootstrap"
+      ],
+      "preconditions": [
+        "只暴露浏览器公开启动配置"
+      ],
+      "sideEffects": [],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-client-meta",
+        "npm": "@wildbuck/core-client-meta-frontend"
+      }
+    },
+    {
+      "key": "core:usage-event",
+      "layer": "core",
+      "title": "产品使用事件采集和结构化日志",
+      "triggers": [
+        "业务需要观察功能是否被看到、进入、动作完成、失败或放弃。",
+        "产品运营分析需要稳定 usage event code 维度和 JSON line 离线导入格式。"
+      ],
+      "reuse": [
+        "后端-only 动作使用 BrickUsageEvents.action() 构造事件，再通过 BrickUsageEventPublisher 显式发布，默认 LoggingBrickUsageEventSink 输出 JSON line。",
+        "前端使用 @wildbuck/core-usage-event-frontend 从 client-meta 自动 bootstrap；模块优先用 createModuleUsageTracker() 绑定事件矩阵，再调用 trackPage、trackOpen、trackAction 或 trackActionResult，不直接拼日志格式、payload 或 success/failure wrapper 分支。"
+      ],
+      "forbidden": [
+        "在业务仓库自建平行埋点框架、日志格式或采集 endpoint。",
+        "把姓名、手机号、身份证号、token、密码、密钥、请求体、表单内容、附件内容或业务对象明文写入 usage event。",
+        "把 usage event 当作审计日志或生产排障日志替代。"
+      ],
+      "whenNot": [
+        "需要审计检索或请求完成排障日志时，应走 core:audit / core:observability。"
+      ],
+      "documentation": [
+        {
+          "path": "capabilities/README.md"
+        },
+        {
+          "path": "capabilities/usage-event.md"
+        },
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "rules/forbidden-patterns.md"
+        }
+      ],
+      "tags": [
+        "usage-event"
+      ],
+      "preconditions": [
+        "默认关闭；开启前确认采集白名单"
+      ],
+      "sideEffects": [
+        "写 JSON line 使用事件日志，不写业务明文"
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-usage-event",
+        "npm": "@wildbuck/core-usage-event-frontend"
+      }
+    },
+    {
+      "key": "core:file-resource",
+      "layer": "core",
+      "title": "图片和业务附件资源引用",
+      "triggers": [
+        "业务需要保存头像、Logo、菜单图标、证照、人脸图片或其他图片附件。",
+        "业务记录只应保存 resourceId、分类、大小和 expireAt，并按业务附件留存清理周期删除记录与资源引用。",
+        "页面需要上传图片并复用统一预览、清除和大小/类型校验。"
+      ],
+      "reuse": [
+        "后端通过 starter 获得 core:file-resource，图片上传使用 POST /file-resources/images?category=BUSINESS_ATTACHMENT，读取使用 GET /file-resources/{resourceId}/content。",
+        "业务后端可注入 FileResourceService 保存图片资源，注入 FileResourceReferenceService 校验引用或在清理任务中 disableIfUnreferenced。",
+        "前端上传控件复用 @wildbuck/core-ui-frontend/fields 的 BrickImageUploadField。"
+      ],
+      "forbidden": [
+        "把图片 Base64、大字段二进制或文件内容直接塞进业务列表/日志表。",
+        "在业务仓库自建长期本地文件表、本地磁盘规则或平行资源引用协议。",
+        "绕过 core:file-resource 的大小、MIME 和分类约束。"
+      ],
+      "whenNot": [
+        "没有图片或业务附件，或不需要 resourceId 引用时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "file"
+      ],
+      "preconditions": [
+        "生产 storage-root 必须为绝对路径"
+      ],
+      "sideEffects": [
+        "写文件资源表与磁盘对象"
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-file-resource"
+      }
+    },
+    {
+      "key": "core:openapi",
+      "layer": "core",
+      "title": "OAuth2 机器访问、OpenAPI 动作、scope 和 HMAC-SM3 完整性",
+      "triggers": [
+        "第三方系统或设备需要通过 OAuth2 client credentials、scope 或 action 调用业务 OpenAPI。",
+        "业务已有组织接入功能点，需要接入统一机器访问校验、可选防重放/防篡改和访问日志。"
+      ],
+      "reuse": [
+        "OAuth2 client credentials、scope/action 主校验和访问日志归 core:oauth2/core:openapi。",
+        "一个 OpenApiAccessLogSink 覆盖 Bearer 认证失败、HMAC 失败、Scope 拒绝、业务响应和业务异常。",
+        "业务组织接入模块先实现 core:oauth2 SPI；只有明确需要防重放/防篡改时，才实现 OpenApiHmacIntegrityCredentialProvider、OpenApiHmacIntegrityValidator，并在集群环境替换 OpenApiHmacNonceStore。"
+      ],
+      "forbidden": [
+        "自建长期 OpenAPI HMAC Filter、签名 canonical 规则或防重放机制。",
+        "把 HMAC 当作 OAuth2 之外的直连认证路径。",
+        "删除 Buck 鉴权链来绕过匿名 OpenAPI 入口。"
+      ],
+      "whenNot": [
+        "浏览器用户会话调用，而不是第三方或设备机器访问时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "examples/business-slice-recipe.md"
+        },
+        {
+          "path": "rules/forbidden-patterns.md"
+        }
+      ],
+      "tags": [
+        "openapi",
+        "hmac"
+      ],
+      "preconditions": [
+        "先确认 OAuth2 机器访问模型；HMAC 仅在明确要求防重放时启用"
+      ],
+      "sideEffects": [
+        "校验失败写 OpenAPI 访问日志"
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-openapi"
+      }
+    },
+    {
+      "key": "core:authentication",
+      "layer": "core",
+      "title": "登录、登出、会话与密码生命周期执行",
+      "triggers": [
+        "用户名密码登录、验证码登录、登出、改密、MFA 第二步或登录失败冻结。",
+        "需要认证执行链，而不是自建登录 controller。"
+      ],
+      "reuse": [
+        "显式依赖 buck-core-authentication，不随 buck-starter-application 进入；登录入口走 Spring Security filter。",
+        "策略数据来自 modules:security-setting；账号主数据来自 modules:iam。token 签发与撤销走 core:authorization。"
+      ],
+      "forbidden": [
+        "在业务模块暴露登录 controller 或自建认证 filter。",
+        "把 JWT 签发、验签或 refresh 写进认证模块或业务模块。"
+      ],
+      "whenNot": [
+        "资源服务只验 token，不承载登录、登出或改密时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "auth",
+        "login"
+      ],
+      "preconditions": [
+        "显式依赖 buck-core-authentication，不随 starter 进入",
+        "账号主数据走 modules:iam"
+      ],
+      "sideEffects": [
+        "写登录会话；失败冻结/MFA 作用于后续登录"
+      ],
+      "errors": [
+        "BRICK_INVALID_CREDENTIALS",
+        "BRICK_DEVICE_ID_REQUIRED",
+        "BRICK_LOGIN_BLOCKED",
+        "BRICK_UNAUTHORIZED"
+      ],
+      "failureModes": [
+        {
+          "code": "BRICK_INVALID_CREDENTIALS",
+          "retryable": false,
+          "recovery": "检查账号密码后重试。"
+        },
+        {
+          "code": "BRICK_DEVICE_ID_REQUIRED",
+          "retryable": false,
+          "recovery": "使用正式登录页重试，或在请求中提供 Device-Id。"
+        },
+        {
+          "code": "BRICK_LOGIN_BLOCKED",
+          "retryable": false,
+          "recovery": "请稍后重试，若仍失败请检查登录安全配置。"
+        },
+        {
+          "code": "BRICK_UNAUTHORIZED",
+          "retryable": false,
+          "recovery": "重新登录后重试。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-authentication",
+        "npm": "@wildbuck/core-authentication-frontend"
+      }
+    },
+    {
+      "key": "core:authorization",
+      "layer": "core",
+      "title": "当前主体、权限校验、token 验签与撤销",
+      "triggers": [
+        "资源接口需要当前主体、权限码校验、Bearer token 验签或 refresh。",
+        "登录成功后需要签发、轮换或撤销 access/refresh token。"
+      ],
+      "reuse": [
+        "资源服务依赖 core:authorization 或 buck-starter-application 本地验签。",
+        "权限声明用框架注解与 modules:iam 权限码；不在业务模块自建 token 过滤器。"
+      ],
+      "forbidden": [
+        "自建 JWT 过滤器、权限拦截器或把鉴权写进 IAM Dao。",
+        "让 core:authorization 依赖 core:authentication。"
+      ],
+      "whenNot": [
+        "纯内部批任务，且不暴露需要鉴权的 HTTP 资源时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "authz",
+        "token"
+      ],
+      "preconditions": [
+        "资源服务依赖 starter 或 buck-core-authorization"
+      ],
+      "sideEffects": [
+        "签发/轮换/撤销 JWT；本地黑名单检查"
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-authorization",
+        "npm": "@wildbuck/core-authorization-frontend"
+      }
+    },
+    {
+      "key": "core:oauth2",
+      "layer": "core",
+      "title": "OAuth2 客户端与机器访问 SPI",
+      "triggers": [
+        "第三方应用、OAuth client、redirect URI、scope 或机器访问。",
+        "需要在正式模块实现 OAuth2 客户端治理，而不是自建协议。"
+      ],
+      "reuse": [
+        "默认采用 modules:application-center 承载 OAuth client/scope；core:oauth2 只提供 SPI。",
+        "业务已有组织接入功能点时，在该模块实现 core:oauth2 SPI，不平行再造一套。"
+      ],
+      "forbidden": [
+        "把 OAuth client 或 scope 塞进 IAM。",
+        "自建 OAuth 回调、client 表或平行 token 协议。"
+      ],
+      "whenNot": [
+        "只有人机登录，没有第三方 client 或机器访问时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "oauth2"
+      ],
+      "preconditions": [
+        "client/scope 默认由 modules:application-center 承载"
+      ],
+      "sideEffects": [],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-oauth2"
+      }
+    },
+    {
+      "key": "core:transport",
+      "layer": "core",
+      "title": "请求响应传输封装与传输安全执行",
+      "triggers": [
+        "需要统一请求/响应封装、传输安全策略执行或前端 HTTP 客户端。",
+        "安全设置里的传输安全策略需要落到实际请求链。"
+      ],
+      "reuse": [
+        "通过 starter 装配 core:transport；前端使用 @wildbuck/core-transport-frontend。",
+        "传输策略由 modules:security-setting 治理，执行仍在 core:transport。"
+      ],
+      "forbidden": [
+        "自建平行 HTTP 封装、签名客户端或绕过 starter 传输链。",
+        "在业务模块重写传输安全 filter。"
+      ],
+      "whenNot": [
+        "纯内部非 HTTP 调用，或不走浏览器传输链时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        }
+      ],
+      "tags": [
+        "transport"
+      ],
+      "preconditions": [
+        "starter 装配传输链",
+        "策略由 modules:security-setting 治理"
+      ],
+      "sideEffects": [],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-transport",
+        "npm": "@wildbuck/core-transport-frontend"
+      }
+    },
+    {
+      "key": "core:audit",
+      "layer": "core",
+      "title": "审计事件模型与发布 SPI",
+      "triggers": [
+        "登录、安全、ORM 或业务动作需要发布可落库的审计事件。",
+        "需要统一审计事件模型，而不是模块私有日志表。"
+      ],
+      "reuse": [
+        "业务动作通过 BrickAuditPublisher 发布 core:audit 标准事件。",
+        "落库、搜索和详情页采用 modules:audit，不在业务模块再建审计表。"
+      ],
+      "forbidden": [
+        "自建审计事件模型或把采集规则写进业务模块。",
+        "把认证/ORM 内部采集回流到业务仓。"
+      ],
+      "whenNot": [
+        "只要产品使用分析或请求完成日志，不需要可检索审计事件时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "audit"
+      ],
+      "preconditions": [
+        "落库查询采用 modules:audit"
+      ],
+      "sideEffects": [
+        "发布审计事件供模块落库"
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-audit"
+      }
+    },
+    {
+      "key": "core:notification-mail",
+      "layer": "core",
+      "title": "SMTP 邮件通知 provider",
+      "triggers": [
+        "需要通过 EMAIL/SMTP 发送通知、验证码或 MFA 邮件。",
+        "邮件发送运行时需要正式通道，而不是业务仓直连 SMTP。"
+      ],
+      "reuse": [
+        "发送运行时用 core:notification-mail；正式 SMTP 配置由 modules:notification-setting 治理。",
+        "通过 core:notification 路由，不在业务模块写 JavaMailSender。"
+      ],
+      "forbidden": [
+        "业务模块直连 SMTP 或硬编码 spring.mail.* 作为正式通道。",
+        "把发件人治理或通道配置写进通知运行时。"
+      ],
+      "whenNot": [
+        "不发送邮件，或只使用测试 mock、不接真实 SMTP 时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "notification",
+        "mail"
+      ],
+      "preconditions": [
+        "正式 SMTP 由 modules:notification-setting 治理"
+      ],
+      "sideEffects": [
+        "发送真实邮件"
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-notification-mail"
+      }
+    },
+    {
+      "key": "core:ai-agent",
+      "layer": "core",
+      "title": "Buck AI 工具 SPI、执行策略与脱敏边界",
+      "triggers": [
+        "业务工具需要声明 toolCode、权限、执行策略或 JSON schema。",
+        "AI 助手或 MCP 需要同一套工具执行门，而不是通道各自放行。"
+      ],
+      "reuse": [
+        "模块通过 BrickAiToolProvider / BrickAiToolExecutor 贡献工具。",
+        "写工具默认 ASK；可见性与执行走 BrickAiToolGuard。FULL_ACCESS 不能跳过确认。MCP 必须复用同一执行门。"
+      ],
+      "forbidden": [
+        "自建工具注册表、绕过 Guard 直调 executor，或让 FULL_ACCESS 覆盖 ASK。",
+        "创建通用 CRUD/数据库/任意 OpenAPI Agent，或工具内 JDBC/手写 SQL。"
+      ],
+      "whenNot": [
+        "不向 AI 暴露业务工具、纯人工控制台时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "ai",
+        "tools"
+      ],
+      "preconditions": [
+        "工具声明 permissionCode 与 executionPolicy",
+        "写工具不得 ALLOW"
+      ],
+      "sideEffects": [
+        "ASK/写工具未确认不执行"
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-ai-agent"
+      }
+    },
+    {
+      "key": "modules:ai-assistant",
+      "layer": "module",
+      "title": "业务 AI 助手、会话、工具调用确认和侧栏入口（released-candidate）",
+      "triggers": [
+        "业务需要提供可对话的 AI 助手、模型会话、助手侧栏或多助手入口。",
+        "业务需要让 AI 调用业务功能、读取业务摘要、生成建议或在人工确认后执行高风险动作。"
+      ],
+      "reuse": [
+        "后端采用 buck-module-ai-assistant-backend，并通过 BrickAiAssistantDefinitionProvider 声明业务助手 code、名称、模型服务、系统提示词、业务权限和 toolCodes。",
+        "业务工具通过 core:ai-agent 的 BrickAiToolProvider 声明工具描述，通过 BrickAiToolExecutor 执行业务服务逻辑。",
+        "前端采用 @wildbuck/module-ai-assistant-frontend；标准控制台壳优先用 @wildbuck/module-ai-assistant-frontend/shell-entry，已有自定义右侧宿主时再用 @wildbuck/module-ai-assistant-frontend/assistant-panel，完整页面用 ./page-registry，从后端读取当前主体可用助手和会话，不硬编码助手列表。"
+      ],
+      "forbidden": [
+        "在业务仓库自建 AI 会话表、助手目录、工具调用状态机或前端助手清单。",
+        "创建通用 CRUD Agent、通用数据库 Agent、任意 OpenAPI Agent 或让工具直接 JDBC/手写 SQL 访问数据。",
+        "复制 validation/security-console 的验证壳实现作为正式 AI 助手来源。"
+      ],
+      "whenNot": [
+        "只要外置 Agent MCP 面、不要控制台助手侧栏时。",
+        "未接受 released-candidate 风险时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "upper-application-development-guide.md"
+        },
+        {
+          "path": "modules/ai-assistant/README.ai.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "ai",
+        "released-candidate"
+      ],
+      "preconditions": [
+        "接受 released-candidate 风险，或等 released",
+        "工具走 BrickAiToolProvider"
+      ],
+      "sideEffects": [
+        "写助手/会话/toolCall 表；写工具需确认后执行"
+      ],
+      "maturity": "released-candidate",
+      "errors": [
+        "AI_ASSISTANT_ASSISTANT_NOT_FOUND",
+        "AI_ASSISTANT_NO_AVAILABLE_MODEL_SERVICE",
+        "AI_ASSISTANT_TOOL_CALL_STATE_INVALID",
+        "AI_ASSISTANT_TOOL_NOT_FOUND"
+      ],
+      "failureModes": [
+        {
+          "code": "AI_ASSISTANT_ASSISTANT_NOT_FOUND",
+          "retryable": false,
+          "recovery": "刷新助手列表后重试。"
+        },
+        {
+          "code": "AI_ASSISTANT_NO_AVAILABLE_MODEL_SERVICE",
+          "retryable": false,
+          "recovery": "先新增并启用至少一个 AI 服务后再使用助手。"
+        },
+        {
+          "code": "AI_ASSISTANT_TOOL_CALL_STATE_INVALID",
+          "retryable": false,
+          "recovery": "刷新后重试。"
+        },
+        {
+          "code": "AI_ASSISTANT_TOOL_NOT_FOUND",
+          "retryable": false,
+          "recovery": "检查当前用户权限后重试。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-ai-assistant-backend",
+        "npm": "@wildbuck/module-ai-assistant-frontend"
+      }
+    },
+    {
+      "key": "core:mcp",
+      "layer": "core",
+      "title": "外置 Agent MCP 服务端宿主与工具暴露",
+      "triggers": [
+        "独立进程的外置 Agent 或助手服务需要通过标准 MCP 调用本业务系统受控能力。",
+        "业务应用需要对外提供 tools/list、tools/call 等 MCP 服务端面，而不是侧栏 AI 助手会话。"
+      ],
+      "reuse": [
+        "显式依赖 buck-core-mcp，启用 brick.mcp.enabled=true；生产保持 allow-anonymous 默认 false，勿照抄验证壳。",
+        "推荐用 core:ai-agent 的 BrickAiToolProvider 与 BrickAiToolExecutor 贡献业务工具；classpath 有 ai-agent 时由框架自动桥接到 MCP。写工具/ASK 工具经 BrickAiToolGuard，未经确认返回 REQUIRES_CONFIRMATION，不直接执行。",
+        "仅当工具不应进入 AI 助手目录时，再实现 BrickMcpToolProvider 直贡献。",
+        "工具只调用业务 service，复用业务功能点权限；平台安全/IAM/审计等能力命中对应正式模块。"
+      ],
+      "forbidden": [
+        "自建长期平行 MCP 服务端、平行 tool registry 或把管理端 CRUD 当外置 Agent 主路径。",
+        "创建通用数据库 Agent、任意 OpenAPI 自由调用 Agent，或工具内 JDBC/手写 SQL。",
+        "生产复制验证壳 allow-anonymous=true；把外置 Agent 协议面绑进 modules:ai-assistant 会话。"
+      ],
+      "whenNot": [
+        "只要控制台 AI 侧栏会话、不要外置 Agent 协议面时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "upper-application-development-guide.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "mcp",
+        "runtime-agent"
+      ],
+      "preconditions": [
+        "显式依赖 buck-core-mcp",
+        "brick.mcp.enabled=true",
+        "allow-anonymous=false"
+      ],
+      "sideEffects": [
+        "暴露 /mcp；ASK/写工具返回 REQUIRES_CONFIRMATION 且不执行"
+      ],
+      "errors": [
+        "BRICK_UNAUTHORIZED",
+        "BRICK_FORBIDDEN",
+        "BRICK_REQUEST_BODY_INVALID"
+      ],
+      "failureModes": [
+        {
+          "code": "BRICK_UNAUTHORIZED",
+          "retryable": false,
+          "recovery": "重新登录后重试。"
+        },
+        {
+          "code": "BRICK_FORBIDDEN",
+          "retryable": false,
+          "recovery": "联系管理员开通权限。"
+        },
+        {
+          "code": "BRICK_REQUEST_BODY_INVALID",
+          "retryable": false,
+          "recovery": "检查请求 JSON 格式后重试。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-mcp"
+      }
+    },
+    {
+      "key": "modules:identity-federation",
+      "layer": "module",
+      "title": "外部身份联邦、目录同步与身份关联（released-candidate）",
+      "triggers": [
+        "需要 OAuth2、钉钉等外部身份源登录。",
+        "需要把外部通讯录同步到本地员工/组织，或把外部主体关联到本地员工。"
+      ],
+      "reuse": [
+        "采用 buck-module-identity-federation-backend 与 @wildbuck/module-identity-federation-frontend/page-registry。",
+        "本地主数据仍走 modules:iam 目录端口；登录入口白名单在 modules:security-setting。"
+      ],
+      "forbidden": [
+        "把身份源、同步中心或身份关联写回 IAM。",
+        "自建 OAuth 回调、同步任务表或平行绑定协议。"
+      ],
+      "whenNot": [
+        "只有本地账号登录、不接外部身份源时。",
+        "未接受 released-candidate 风险时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "modules/identity-federation/README.ai.md"
+        }
+      ],
+      "tags": [
+        "federation",
+        "released-candidate"
+      ],
+      "preconditions": [
+        "同时装配 IAM 目录端口与 core:oauth2",
+        "接受 RC 风险"
+      ],
+      "sideEffects": [
+        "写 brick_idf_*；可能创建/绑定本地员工"
+      ],
+      "maturity": "released-candidate",
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-identity-federation-backend",
+        "npm": "@wildbuck/module-identity-federation-frontend"
+      }
+    },
+    {
+      "key": "modules:login-brand",
+      "layer": "module",
+      "title": "登录页品牌、系统名称、Logo 与背景（released-candidate）",
+      "triggers": [
+        "需要管理登录页系统名称、描述、Logo、背景或布局位置。",
+        "需要登录页品牌跟随控制台主题或使用受控模板。"
+      ],
+      "reuse": [
+        "采用 buck-module-login-brand-backend 与 @wildbuck/module-login-brand-frontend/page-registry。",
+        "公开呈现走 core:client-meta 的 capabilities.loginBrand，图片走 core:file-resource。"
+      ],
+      "forbidden": [
+        "把登录页品牌合成写回 IAM。",
+        "自造多租户品牌表或任意 CSS/像素拖拽。",
+        "把正式品牌配置沉到 validation。"
+      ],
+      "whenNot": [
+        "使用默认登录文案且不管理 Logo 或背景时。",
+        "未接受 released-candidate 风险时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "modules/login-brand/README.ai.md"
+        }
+      ],
+      "tags": [
+        "login",
+        "brand",
+        "released-candidate"
+      ],
+      "preconditions": [
+        "接受 released-candidate 风险，或等 released",
+        "图片走 core:file-resource"
+      ],
+      "sideEffects": [
+        "写 brick_login_brand_setting；公开 /login-brand/public/*"
+      ],
+      "maturity": "released-candidate",
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-login-brand-backend",
+        "npm": "@wildbuck/module-login-brand-frontend"
+      }
+    },
+    {
+      "key": "modules:iam",
+      "layer": "module",
+      "title": "IAM 身份、角色、权限、菜单和会话",
+      "triggers": [
+        "用户、员工、组织、角色、菜单、权限、权限分配、当前主体或在线会话治理。",
+        "需要管理员重置密码、强制下线或主体授权画像。"
+      ],
+      "reuse": [
+        "后端采用 buck-module-iam-backend，前端治理页面通过 @wildbuck/module-iam-frontend/page-registry 装配。",
+        "上层应用通过 brick.iam.bootstrap.* 配置初始化管理员、组织和员工档案。"
+      ],
+      "forbidden": [
+        "自建 UserController、RoleController、MenuController、PermissionController 或 SessionController 替代 IAM。",
+        "业务模块直接引入 IAM Dao 初始化主数据。"
+      ],
+      "whenNot": [
+        "纯匿名公开页，不治理账号、角色或会话目录时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "modules/iam/README.ai.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "iam",
+        "auth"
+      ],
+      "preconditions": [
+        "采用 buck-module-iam-backend",
+        "覆盖初始运维密码配置"
+      ],
+      "sideEffects": [
+        "bootstrap 写运维账号/角色/菜单目录",
+        "AI 写工具改员工/角色/会话"
+      ],
+      "maturity": "released",
+      "errors": [
+        "IAM_EMPLOYEE_NOT_FOUND",
+        "IAM_ROLE_NOT_FOUND",
+        "IAM_INITIAL_PASSWORD_NOT_CONFIGURED",
+        "BRICK_FORBIDDEN"
+      ],
+      "failureModes": [
+        {
+          "code": "IAM_EMPLOYEE_NOT_FOUND",
+          "retryable": false,
+          "recovery": "刷新员工列表后重试。"
+        },
+        {
+          "code": "IAM_ROLE_NOT_FOUND",
+          "retryable": false,
+          "recovery": "刷新角色列表后重试。"
+        },
+        {
+          "code": "IAM_INITIAL_PASSWORD_NOT_CONFIGURED",
+          "retryable": false,
+          "recovery": "请先到密码策略中设置当前初始密码后重试。"
+        },
+        {
+          "code": "BRICK_FORBIDDEN",
+          "retryable": false,
+          "recovery": "联系管理员开通权限。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-iam-backend",
+        "npm": "@wildbuck/module-iam-frontend"
+      }
+    },
+    {
+      "key": "modules:notification-setting",
+      "layer": "module",
+      "title": "EMAIL/SMTP 提供方配置与邮件通道治理",
+      "triggers": [
+        "业务需要正式管理 SMTP 主机、端口、账号、密码、发件地址或发件人名称。",
+        "EMAIL MFA 或其他邮件通知需要复用统一正式通道，而不是只靠本地私有 spring.mail.*。"
+      ],
+      "reuse": [
+        "后端采用 buck-module-notification-setting-backend，前端页面通过 @wildbuck/module-notification-setting-frontend/page-registry 装配。",
+        "邮件发送运行时仍由 core:notification-mail 承担，本模块只治理正式配置来源。"
+      ],
+      "forbidden": [
+        "在验证壳、业务页面或仓库配置里硬编码正式 SMTP provider、账号、发件地址或 provider 路由语义。",
+        "把用户邮箱主数据、MFA 策略或短信通道配置塞进通知配置模块。"
+      ],
+      "whenNot": [
+        "不发送邮件，或不需要运行时治理正式 SMTP 时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "business-frontend-ui-reference.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "notification"
+      ],
+      "preconditions": [
+        "正式 SMTP 由本模块治理，不写 spring.mail 平行配置"
+      ],
+      "sideEffects": [
+        "写加密后的 SMTP 配置；test-send 发真实邮件"
+      ],
+      "maturity": "released",
+      "errors": [
+        "NOTIFICATION_SETTING_EMAIL_SMTP_NOT_READY",
+        "NOTIFICATION_SETTING_EMAIL_SMTP_SAVE_FAILED",
+        "NOTIFICATION_SETTING_EMAIL_SMTP_CHANNEL_IN_USE",
+        "NOTIFICATION_SETTING_EMAIL_SMTP_INVALID_CONFIGURATION"
+      ],
+      "failureModes": [
+        {
+          "code": "NOTIFICATION_SETTING_EMAIL_SMTP_NOT_READY",
+          "retryable": false,
+          "recovery": "请先启用通道并保存完整的 SMTP 主机、端口、账号和密码，再发送测试邮件。"
+        },
+        {
+          "code": "NOTIFICATION_SETTING_EMAIL_SMTP_SAVE_FAILED",
+          "retryable": false,
+          "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。"
+        },
+        {
+          "code": "NOTIFICATION_SETTING_EMAIL_SMTP_CHANNEL_IN_USE",
+          "retryable": false,
+          "recovery": "请先在登录安全中关闭邮箱 MFA 等依赖项，再停用或修改本通道。"
+        },
+        {
+          "code": "NOTIFICATION_SETTING_EMAIL_SMTP_INVALID_CONFIGURATION",
+          "retryable": false,
+          "recovery": "请补齐 SMTP 主机、端口、认证账号等必填项后重试。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-notification-setting-backend",
+        "npm": "@wildbuck/module-notification-setting-frontend"
+      }
+    },
+    {
+      "key": "modules:security-setting",
+      "layer": "module",
+      "title": "登录安全、密码策略、MFA 和传输安全配置",
+      "triggers": [
+        "登录失败冻结、弱密码库、密码策略、MFA 策略、单点登录策略或传输安全配置。",
+        "需要运行时治理认证安全策略，而不是写死配置。"
+      ],
+      "reuse": [
+        "后端采用 buck-module-security-setting-backend，前端页面通过 @wildbuck/module-security-setting-frontend/page-registry 装配。",
+        "认证执行仍由 core:authentication 和 core:transport 负责，安全设置模块只治理策略。"
+      ],
+      "forbidden": [
+        "自建安全策略表、密码策略 controller、MFA 策略页面或传输安全配置页。",
+        "把登录认证 filter 或 controller 放进业务安全设置代码。"
+      ],
+      "whenNot": [
+        "资源服务不承载登录安全、密码、MFA 或传输策略治理时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "modules/security-setting/README.ai.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "security"
+      ],
+      "preconditions": [
+        "与 core:authentication / core:transport 一起装配"
+      ],
+      "sideEffects": [
+        "改登录/密码/传输策略立即作用于认证链"
+      ],
+      "maturity": "released",
+      "errors": [
+        "SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_KEY_INVALID",
+        "SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_NOT_READY",
+        "SECURITY_SETTING_LOGIN_CAPTCHA_POLICY_INVALID",
+        "SECURITY_SETTING_LOGIN_SETTING_SAVE_FAILED"
+      ],
+      "failureModes": [
+        {
+          "code": "SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_KEY_INVALID",
+          "retryable": false,
+          "recovery": "请使用有效的身份源 sourceKey（与身份源管理中的标识一致）。"
+        },
+        {
+          "code": "SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_NOT_READY",
+          "retryable": false,
+          "recovery": "请先在身份源中完成测试连接（状态为已验证）并确认密钥与端点已配置，再到登录安全开通入口。"
+        },
+        {
+          "code": "SECURITY_SETTING_LOGIN_CAPTCHA_POLICY_INVALID",
+          "retryable": false,
+          "recovery": "请将有效期、失败阈值、统计窗口和持续时长都设为大于 0 的整数后重试。"
+        },
+        {
+          "code": "SECURITY_SETTING_LOGIN_SETTING_SAVE_FAILED",
+          "retryable": false,
+          "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-security-setting-backend",
+        "npm": "@wildbuck/module-security-setting-frontend"
+      }
+    },
+    {
+      "key": "modules:audit",
+      "layer": "module",
+      "title": "审计日志落库、查询和详情页",
+      "triggers": [
+        "审计日志存储、审计搜索、审计详情页、登录审计、安全审计、ORM 变更审计或业务动作审计查询。",
+        "需要把 core:audit 发布的事件落库并提供统一查询入口。"
+      ],
+      "reuse": [
+        "业务动作发布 core:audit 标准事件，审计落库和查询采用 modules:audit。",
+        "前端审计页面通过 @wildbuck/module-audit-frontend/page-registry 装配。"
+      ],
+      "forbidden": [
+        "自建 AuditLogEntity、审计表、审计查询 controller 或审计页面替代审计模块。",
+        "把认证、ORM 拦截器内部采集规则回流到审计模块或业务模块。"
+      ],
+      "whenNot": [
+        "只要请求完成日志或 usage-event，不需要审计检索页时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "modules/audit/README.ai.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "audit"
+      ],
+      "preconditions": [
+        "业务动作通过 BrickAuditPublisher 发布"
+      ],
+      "sideEffects": [
+        "写审计日志表"
+      ],
+      "maturity": "released",
+      "errors": [
+        "AUDIT_LOG_NOT_FOUND"
+      ],
+      "failureModes": [
+        {
+          "code": "AUDIT_LOG_NOT_FOUND",
+          "retryable": false,
+          "recovery": "请确认日志编号是否正确"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-audit-backend",
+        "npm": "@wildbuck/module-audit-frontend"
+      }
+    },
+    {
+      "key": "modules:application-center",
+      "layer": "module",
+      "title": "应用中心、OAuth client、scope 和动作白名单",
+      "triggers": [
+        "第三方应用、应用密钥、OAuth client、redirect uri、scope、OpenAPI 动作目录或机器访问白名单治理。",
+        "业务需要治理应用实例和应用到 OpenAPI 动作的授权关系。"
+      ],
+      "reuse": [
+        "默认采用 buck-module-application-center-backend 和 @wildbuck/module-application-center-frontend/page-registry。",
+        "业务已有组织接入功能点时，可在该业务模块实现 core:oauth2 SPI；明确需要防重放/防篡改时再实现 core:openapi HMAC integrity SPI。"
+      ],
+      "forbidden": [
+        "把应用接入塞进 IAM。",
+        "自建 OAuth client、scope、应用动作白名单或访问日志模型替代应用中心。"
+      ],
+      "whenNot": [
+        "没有第三方应用、OAuth client 或 OpenAPI 动作白名单治理时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "modules/application-center/README.ai.md"
+        },
+        {
+          "path": "capabilities/README.md"
+        }
+      ],
+      "tags": [
+        "oauth2",
+        "openapi"
+      ],
+      "preconditions": [
+        "不把应用接入塞进 IAM"
+      ],
+      "sideEffects": [
+        "写 OAuth client / scope；轮转密钥"
+      ],
+      "maturity": "released",
+      "errors": [
+        "APPLICATION_CENTER_APPLICATION_NOT_FOUND",
+        "APPLICATION_CENTER_APPLICATION_TYPE_INVALID",
+        "APPLICATION_CENTER_CALL_RECORD_NOT_FOUND",
+        "APPLICATION_CENTER_OPENAPI_SCOPE_NOT_FOUND"
+      ],
+      "failureModes": [
+        {
+          "code": "APPLICATION_CENTER_APPLICATION_NOT_FOUND",
+          "retryable": false,
+          "recovery": "刷新应用列表后重试。"
+        },
+        {
+          "code": "APPLICATION_CENTER_APPLICATION_TYPE_INVALID",
+          "retryable": false,
+          "recovery": "选择一个受支持的应用类型。"
+        },
+        {
+          "code": "APPLICATION_CENTER_CALL_RECORD_NOT_FOUND",
+          "retryable": false,
+          "recovery": "刷新调用记录列表后重试。"
+        },
+        {
+          "code": "APPLICATION_CENTER_OPENAPI_SCOPE_NOT_FOUND",
+          "retryable": false,
+          "recovery": "刷新 Scope 目录后重试。"
+        }
+      ],
+      "defaultOn": false,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-module-application-center-backend",
+        "npm": "@wildbuck/module-application-center-frontend"
+      }
+    },
+    {
+      "key": "core:orm-plus",
+      "layer": "core",
+      "title": "业务持久化、迁移、逻辑删除、敏感字段和签名字段",
+      "triggers": [
+        "业务实体持久化、Flyway 迁移、逻辑删除、敏感字段、签名字段、变更日志或主键策略。",
+        "需要把 Entity/DO、契约、迁移产物和 MyBatis-Plus 映射保持一致。"
+      ],
+      "reuse": [
+        "业务持久化走 contract、标准 Flyway 迁移产物、MyBatis-Plus 和 core:orm-plus。",
+        "业务表有且只有一个 string(20) 主键，Entity 使用 @TableId(type = IdType.ASSIGN_ID)。"
+      ],
+      "forbidden": [
+        "运行时代码手写 SQL、直接 JDBC、无主键表或复合主键默认建模。",
+        "自建存储加密、签名或变更日志机制。"
+      ],
+      "whenNot": [
+        "纯前端包或无持久化的模块时。"
+      ],
+      "documentation": [
+        {
+          "path": "business-module-adoption-reference.md"
+        },
+        {
+          "path": "upper-application-development-guide.md"
+        },
+        {
+          "path": "rules/forbidden-patterns.md"
+        }
+      ],
+      "tags": [
+        "persistence"
+      ],
+      "preconditions": [
+        "表结构来自 contract/persistence.yaml 与生成 Flyway"
+      ],
+      "sideEffects": [
+        "执行模块迁移；可写加密/签名列和变更日志"
+      ],
+      "errors": [
+        "BRICK_INTERNAL_ERROR",
+        "BRICK_TRANSACTION_TIMEOUT"
+      ],
+      "failureModes": [
+        {
+          "code": "BRICK_INTERNAL_ERROR",
+          "retryable": true,
+          "recovery": "请稍后重试，若仍失败请联系管理员。"
+        },
+        {
+          "code": "BRICK_TRANSACTION_TIMEOUT",
+          "retryable": true,
+          "recovery": "请稍后重试，若仍失败请联系管理员。"
+        }
+      ],
+      "defaultOn": true,
+      "coordinates": {
+        "maven": "io.github.wu9007:buck-core-orm-plus"
+      }
+    }
+  ],
+  "extraction": {
+    "mode": "static",
+    "notes": [
+      "The catalog is generated from manifests, package exports, frontend registries, and Java source scan.",
+      "It does not include deployment-specific configuration or mutable application data."
+    ]
+  }
+}

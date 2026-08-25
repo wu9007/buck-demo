@@ -1,0 +1,1476 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Static Buck AI tool descriptors for business agents and MCP.",
+  "source": "java-source-scan",
+  "limitations": [
+    "Static scan of BrickAiToolProvider sources. Runtime catalog still filters by current subject permissions.",
+    "inputSchema is partial-static: property names and simple types from provider source; unexpanded helpers set schemaStatus=incomplete.",
+    "callable=false when schemaStatus=incomplete. Agents and MCP executable catalogs must ignore non-callable tools; they remain in this file for humans.",
+    "defaultExposed=false for released-candidate modules. Default tool catalogs must hide those tools unless the user accepts RC risk."
+  ],
+  "tools": [
+    {
+      "toolCode": "application.app.read",
+      "displayName": "读取应用详情",
+      "description": "按 applicationId 读取应用详情（含 OAuth client 元数据，不含 secret 明文）。必填 applicationId。",
+      "moduleKey": "application-center",
+      "scope": "application-center",
+      "permissionCode": "application-center:app:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "description": "应用 ID。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.applicationcenter.aitool.ApplicationCenterAiToolProvider",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/aitool/ApplicationCenterAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "application.app.scopes.read",
+      "displayName": "读取应用 Scope 授权",
+      "description": "查看应用已分配的 OpenAPI Scope 及目录可选项。必填 applicationId。",
+      "moduleKey": "application-center",
+      "scope": "application-center",
+      "permissionCode": "application-center:app:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "description": "应用 ID。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.applicationcenter.aitool.ApplicationCenterAiToolProvider",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/aitool/ApplicationCenterAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "application.app.search",
+      "displayName": "查询接入应用",
+      "description": "分页查询应用中心应用列表。用户说「有哪些应用」「查某个 client 应用」时调用。可选 keyword、applicationType、enabled、page、size。",
+      "moduleKey": "application-center",
+      "scope": "application-center",
+      "permissionCode": "application-center:app:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选，应用名/编码关键字。"
+          },
+          "applicationType": {
+            "type": "string",
+            "description": "可选，应用类型。"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "可选，是否启用。"
+          },
+          "page": {
+            "type": "integer",
+            "description": "页码，默认 1。"
+          },
+          "size": {
+            "type": "integer",
+            "description": "每页条数，默认 20，最大 50。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.applicationcenter.aitool.ApplicationCenterAiToolProvider",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/aitool/ApplicationCenterAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "application.call-record.search",
+      "displayName": "查询应用调用记录",
+      "description": "查询某应用的 OpenAPI 调用记录摘要。必填 applicationId；可选 page/size。",
+      "moduleKey": "application-center",
+      "scope": "application-center",
+      "permissionCode": "application-center:app:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "description": "应用 ID。"
+          },
+          "page": {
+            "type": "integer",
+            "description": "页码，默认 1。"
+          },
+          "size": {
+            "type": "integer",
+            "description": "每页条数，默认 20。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.applicationcenter.aitool.ApplicationCenterAiToolProvider",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/aitool/ApplicationCenterAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.employee.create",
+      "displayName": "创建员工",
+      "description": "在指定组织创建员工与登录账号，初始密码取安全设置策略且不回显。用户说「新建员工」「给研发部加账号」时调用。必填：organizationId 或 organizationCode/organizationName、username、employeeName、phoneNumber、email、idCardNumber。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee:edit",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "organizationId": {
+            "type": "string",
+            "description": "组织 ID，与编码/名称三选一。"
+          },
+          "organizationCode": {
+            "type": "string",
+            "description": "组织编码。"
+          },
+          "organizationName": {
+            "type": "string",
+            "description": "组织名称。"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号。"
+          },
+          "employeeName": {
+            "type": "string",
+            "description": "员工姓名。"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "手机号。"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱。"
+          },
+          "idCardNumber": {
+            "type": "string",
+            "description": "证件号。"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "可选，默认 true。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.employee.password.reset",
+      "displayName": "重置员工密码",
+      "description": "管理员重置员工密码为安全设置中的当前初始密码，并失效会话。不回显口令。用户说「重置张三密码」「把 operator 密码重置」时调用。参数 employeeId 或 username。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee-password:reset",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "员工 ID，与 username 二选一。"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.employee.role.assign",
+      "displayName": "分配员工角色",
+      "description": "整体替换员工角色集合。用户说「把张三设为运维角色」「给某某分配角色」时调用。参数 employeeId/username，以及 roleIds 或 roleNames。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee-role:assign",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "员工 ID，与 username 二选一。"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号。"
+          },
+          "roleIds": {
+            "type": "array",
+            "description": "角色 ID 列表，与 roleNames 二选一或并用。",
+            "items": {
+              "type": "string"
+            }
+          },
+          "roleNames": {
+            "type": "array",
+            "description": "角色名称列表。",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.employee.role.read",
+      "displayName": "查看员工角色",
+      "description": "查看员工已分配角色与有效权限摘要。用户说「张三有哪些角色」「某某权限有哪些」时调用。参数 employeeId 或 username。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee-role:assign",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "员工 ID，与 username 二选一。"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.employee.search",
+      "displayName": "查询员工",
+      "description": "按关键字/组织查询员工列表。用户说「查张三」「员工列表」「某某部门有哪些人」时调用。可选 keyword、organizationId/organizationCode/organizationName、enabled、page、size。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选，匹配姓名、账号等。"
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "可选组织 ID。"
+          },
+          "organizationCode": {
+            "type": "string",
+            "description": "可选组织编码。"
+          },
+          "organizationName": {
+            "type": "string",
+            "description": "可选组织名称。"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "可选，是否仅启用。"
+          },
+          "page": {
+            "type": "integer",
+            "description": "可选页码，默认 1。"
+          },
+          "size": {
+            "type": "integer",
+            "description": "可选每页条数，默认 20，最大 50。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.employee.unlock",
+      "displayName": "解锁员工账户",
+      "description": "解除登录失败冻结并清理失败计数。用户说「解锁某某」「登录被锁了」时调用。参数 employeeId 或 username。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee:unlock",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "员工 ID，与 username 二选一。"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.function.catalog.explain",
+      "displayName": "解读功能点覆盖",
+      "description": "解读未绑菜单的功能点、未绑功能点的页面菜单、持久化缺失项。用户说「功能点齐不齐」「漏绑」时调用。无需参数。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:menu:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.function.catalog.read",
+      "displayName": "查看功能点目录",
+      "description": "查看 IAM 已注册的功能组、功能点与动作数量。用户说「有哪些功能点」「功能目录」时调用。可选 keyword。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:menu:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选关键字。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.function.detail.read",
+      "displayName": "查看功能点详情",
+      "description": "查看单个功能点的动作、权限码和已绑定菜单。参数 functionCode 必填。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:menu:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "functionCode": {
+            "type": "string",
+            "description": "功能点编码，例如 iam.employee。"
+          }
+        },
+        "required": [
+          "functionCode"
+        ]
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.function.menu.bind",
+      "displayName": "绑定菜单到功能点",
+      "description": "把已有菜单绑定到已注册功能点，不能新建功能点。菜单用 menuId/menuCode；功能点用 functionPointId/functionCode。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:menu:edit",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "menuId": {
+            "type": "string",
+            "description": "菜单 ID。"
+          },
+          "menuCode": {
+            "type": "string",
+            "description": "菜单编码。"
+          },
+          "functionPointId": {
+            "type": "string",
+            "description": "功能点 ID。"
+          },
+          "functionCode": {
+            "type": "string",
+            "description": "功能点编码。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.function.menu.bindings.read",
+      "displayName": "查看菜单功能点绑定",
+      "description": "查看菜单与功能点绑定。可选 keyword。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:menu:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选关键字。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.organization.create",
+      "displayName": "创建组织",
+      "description": "创建组织节点。用户说「新建研发部」「加一个子部门」时调用。必填 organizationCode、organizationName；可选 parentId/parentCode/parentName、sortNo、enabled。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:organization:edit",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "organizationCode": {
+            "type": "string",
+            "description": "组织编码。"
+          },
+          "organizationName": {
+            "type": "string",
+            "description": "组织名称。"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "可选上级组织 ID。"
+          },
+          "parentCode": {
+            "type": "string",
+            "description": "可选上级组织编码。"
+          },
+          "parentName": {
+            "type": "string",
+            "description": "可选上级组织名称。"
+          },
+          "sortNo": {
+            "type": "integer",
+            "description": "可选排序号，默认 0。"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "可选，默认 true。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.organization.read",
+      "displayName": "查询组织",
+      "description": "读取组织树并支持关键字过滤。用户说「组织架构」「有哪些部门」时调用。可选 keyword。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:organization:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选，匹配组织编码或名称。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.overview.stats",
+      "displayName": "统计 IAM 概况",
+      "description": "统计员工、组织、角色、活动会话和功能点绑定覆盖。用户说「IAM 概况」「有多少员工」「多少角色/会话」时调用。无需参数。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:employee:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.role.search",
+      "displayName": "查询角色",
+      "description": "查询角色列表；提供 roleId 时返回角色详情与已授权权限数量。用户说「有哪些角色」「运维角色权限」时调用。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:role:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选角色名关键字。"
+          },
+          "roleId": {
+            "type": "string",
+            "description": "可选，提供则查详情与授权数。"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "可选。"
+          },
+          "page": {
+            "type": "integer",
+            "description": "可选页码。"
+          },
+          "size": {
+            "type": "integer",
+            "description": "可选每页条数。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.session.invalidate.employee",
+      "displayName": "强制员工下线",
+      "description": "失效指定员工的全部活动会话。用户说「强制下线张三」「踢下线」时调用。参数 employeeId 或 username。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:session:invalidate",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "员工 ID，与 username 二选一。"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "iam.session.search",
+      "displayName": "查询会话",
+      "description": "查询在线/历史会话。用户说「谁在线」「查某某会话」时调用。可选 keyword、includeInactive、page、size。",
+      "moduleKey": "iam",
+      "scope": "iam",
+      "permissionCode": "iam:session:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "可选，匹配账号或员工名。"
+          },
+          "includeInactive": {
+            "type": "boolean",
+            "description": "可选，是否包含已失效会话。"
+          },
+          "page": {
+            "type": "integer",
+            "description": "可选页码。"
+          },
+          "size": {
+            "type": "integer",
+            "description": "可选每页条数。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.iam.aitool.provider.IamAiToolProvider",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/aitool/provider/IamAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "notification.email.smtp.read",
+      "displayName": "查看邮件 SMTP 配置",
+      "description": "读取通知模块 EMAIL SMTP 提供方配置（不含密码明文）。用户说「邮件怎么配的」「SMTP 开了吗」「发件人是谁」时调用。无需参数。",
+      "moduleKey": "notification-setting",
+      "scope": "notification-setting",
+      "permissionCode": "notification-setting:email-smtp:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "inline-map",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.notificationsetting.aitool.NotificationSettingAiToolProvider",
+      "file": "modules/notification-setting/backend/src/main/java/io/github/wu9007/buck/modules/notificationsetting/aitool/NotificationSettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.audit.detail",
+      "displayName": "读取审计详情",
+      "description": "按 auditLogId 读取单条审计详情。用户说「这条审计详情」「打开某某 auditLogId」时调用。必填 auditLogId。",
+      "moduleKey": "audit",
+      "scope": "audit",
+      "permissionCode": "audit:log:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "auditLogId": {
+            "type": "string",
+            "description": "审计日志 ID。"
+          }
+        },
+        "required": [
+          "auditLogId"
+        ]
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.audit.log.aitool.AuditLogAiToolProvider",
+      "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/aitool/AuditLogAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.audit.search",
+      "displayName": "查询审计明细列表",
+      "description": "分页查询审计日志摘要列表（非聚合）。用户说「最近 20 条登录失败」「查某某的操作记录」时调用。可选 category/action/result/operatorKeyword/traceId/时间范围/page/size。",
+      "moduleKey": "audit",
+      "scope": "audit",
+      "permissionCode": "audit:log:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "可选。审计分类过滤。"
+          },
+          "action": {
+            "type": "string",
+            "description": "可选。审计动作过滤。"
+          },
+          "result": {
+            "type": "string",
+            "description": "可选。SUCCESS/FAILURE。"
+          },
+          "operatorKeyword": {
+            "type": "string",
+            "description": "可选。操作者关键词。"
+          },
+          "targetType": {
+            "type": "string",
+            "description": "可选。目标类型。"
+          },
+          "targetKeyword": {
+            "type": "string",
+            "description": "可选。目标名称关键词。"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "可选。traceId。"
+          },
+          "eventTimeFrom": {
+            "type": "string",
+            "description": "可选。开始时间 ISO-8601。"
+          },
+          "eventTimeTo": {
+            "type": "string",
+            "description": "可选。结束时间 ISO-8601。"
+          },
+          "page": {
+            "type": "integer",
+            "description": "页码，默认 1。"
+          },
+          "size": {
+            "type": "integer",
+            "description": "每页条数，默认 20。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.audit.log.aitool.AuditLogAiToolProvider",
+      "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/aitool/AuditLogAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.audit.summarize",
+      "displayName": "统计安全审计",
+      "description": "统计当前账号有权查看的安全审计概况：登录失败、权限拒绝、安全策略变更等。用户说「最近登录失败多少」「审计里各类型占比」时调用。未指定时间范围时统计全部时间。",
+      "moduleKey": "audit",
+      "scope": "audit",
+      "permissionCode": "audit:log:list",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "可选。审计分类过滤。"
+          },
+          "action": {
+            "type": "string",
+            "description": "可选。审计动作过滤。"
+          },
+          "result": {
+            "type": "string",
+            "description": "可选。SUCCESS/FAILURE。"
+          },
+          "operatorKeyword": {
+            "type": "string",
+            "description": "可选。操作者关键词。"
+          },
+          "targetType": {
+            "type": "string",
+            "description": "可选。目标类型。"
+          },
+          "targetKeyword": {
+            "type": "string",
+            "description": "可选。目标名称关键词。"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "可选。traceId。"
+          },
+          "eventTimeFrom": {
+            "type": "string",
+            "description": "可选。开始时间 ISO-8601。"
+          },
+          "eventTimeTo": {
+            "type": "string",
+            "description": "可选。结束时间 ISO-8601。"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "兼容字段。"
+          }
+        }
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.audit.log.aitool.AuditLogAiToolProvider",
+      "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/aitool/AuditLogAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.login.applyUpdate",
+      "displayName": "修改登录安全",
+      "description": "真正修改登录安全配置。用户明确要求打开/关闭/启用/停用/调整时调用，不要只口头回答。常见说法与参数：「打开图形验证码」→ patch.captcha.captchaEnabled=true；「关闭图形验证码」→ patch.captcha.captchaEnabled=false；「开启失败冻结」→ patch.failureFreeze.loginFailureFreezeEnabled=true；「开启多因子认证」→ patch.mfa.mfaEnabled=true。patch 只能放在 captcha / failureFreeze / mfa / verificationCode 片段下。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:login-security:manage",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "loginPatchSchema",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.login.explain",
+      "displayName": "解读登录安全风险",
+      "description": "根据当前登录安全配置给出业务风险解读与改进建议。用户说「登录安全有什么风险」「这样配合不合理」时调用。无需参数。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:login-security:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.login.proposeUpdate",
+      "displayName": "预览登录安全修改",
+      "description": "只生成登录安全修改方案与差异，不落库。仅当用户明确说「先看看方案」「预览一下」「对比 diff」时使用；用户已明确要改配置时不要用本工具，应改用「修改登录安全」。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:login-security:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "loginPatchSchema",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.login.read",
+      "displayName": "查看登录安全",
+      "description": "查看当前登录安全配置：图形验证码是否开启、失败冻结、多因子认证、动态口令、单点登录。用户说「现在验证码开了吗」「登录安全怎么配的」「有没有失败冻结」时调用。无需参数。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:login-security:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.password.applyUpdate",
+      "displayName": "修改密码策略",
+      "description": "真正修改密码策略。用户明确要求调整密码长度、强度、周期改密、弱密码库时调用。例如「密码最少 12 位」→ patch.strength.minLength=12；「开启周期改密」→ patch.cycle.periodicChangeEnabled=true。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:password-policy:manage",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "passwordPatchSchema",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.password.explain",
+      "displayName": "解读密码策略风险",
+      "description": "根据当前密码策略解释风险与影响。用户说「密码策略严不严」「有什么风险」时调用。无需参数。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:password-policy:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.password.proposeUpdate",
+      "displayName": "预览密码策略修改",
+      "description": "只预览密码策略修改差异，不落库。用户要方案/预览时用；明确要改时改用「修改密码策略」。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:password-policy:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "passwordPatchSchema",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.password.read",
+      "displayName": "查看密码策略",
+      "description": "查看密码强度、弱密码库、初始密码、周期改密和生命周期动作。用户说「密码策略是什么」「密码最少几位」「要不要改密」时调用。无需参数。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:password-policy:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.transport.applyUpdate",
+      "displayName": "修改传输安全",
+      "description": "真正修改传输安全。用户明确要求开启/关闭传输保护、调整保护范围或防重放时调用。例如「开启传输安全」→ patch.execution.enabled=true。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:transport-security:manage",
+      "executionPolicy": "ASK",
+      "riskLevel": "HIGH",
+      "writeOperation": true,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "transportPatchSchema",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        },
+        {
+          "code": "REQUIRES_CONFIRMATION",
+          "retryable": false,
+          "recovery": "写工具需要确认后才能执行。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.transport.explain",
+      "displayName": "解读传输安全风险",
+      "description": "根据当前传输安全配置解释风险。用户说「传输安全有没有问题」时调用。无需参数。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:transport-security:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.transport.proposeUpdate",
+      "displayName": "预览传输安全修改",
+      "description": "只预览传输安全修改差异，不落库。用户要方案/预览时用；明确要改时改用「修改传输安全」。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:transport-security:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "MEDIUM",
+      "writeOperation": false,
+      "callable": false,
+      "inputSchema": {
+        "type": "object",
+        "extraction": "partial-static",
+        "schemaMethod": "transportPatchSchema",
+        "schemaStatus": "incomplete"
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    },
+    {
+      "toolCode": "security.transport.read",
+      "displayName": "查看传输安全",
+      "description": "查看传输保护是否开启、保护范围、摘要与防重放策略。用户说「传输加密开了吗」「接口保护怎么配」时调用。无需参数。",
+      "moduleKey": "security-setting",
+      "scope": "security-setting",
+      "permissionCode": "security-setting:transport-security:view",
+      "executionPolicy": "ALLOW",
+      "riskLevel": "LOW",
+      "writeOperation": false,
+      "callable": true,
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "failureModes": [
+        {
+          "code": "DENIED_PERMISSION",
+          "retryable": false,
+          "recovery": "当前主体无权执行该工具。"
+        }
+      ],
+      "providerClass": "io.github.wu9007.buck.modules.securitysetting.aitool.provider.SecuritySettingAiToolProvider",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/aitool/provider/SecuritySettingAiToolProvider.java",
+      "maturity": "released",
+      "defaultExposed": true
+    }
+  ]
+}

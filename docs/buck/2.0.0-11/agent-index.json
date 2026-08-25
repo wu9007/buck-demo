@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "kind": "brick-agent-index",
+  "purpose": "RAG routing for business agents. Read boot first; load phase files only when that phase starts. Not a capability contract.",
+  "boot": [
+    "README.md",
+    "agent-index.json",
+    "capabilities/packs.json"
+  ],
+  "phase": {
+    "capability-hit": [
+      "capabilities/capability-catalog.json",
+      "capabilities/README.md"
+    ],
+    "query-option": [
+      "capabilities/query-option-index.json"
+    ],
+    "tools": [
+      "capabilities/tools.schema.json"
+    ],
+    "upgrade": [
+      "compatibility/migration-notes.md"
+    ],
+    "module-adoption": [
+      "business-module-adoption-reference.md"
+    ],
+    "frontend": [
+      "business-frontend-ui-reference.md",
+      "business-frontend-page-patterns.md"
+    ],
+    "startup": [
+      "business-repository-startup-checklist.md",
+      "upper-application-development-guide.md"
+    ],
+    "cicd": [
+      "business-ci-cd.md"
+    ]
+  },
+  "doNotRead": [
+    "brick-next 源码或本地 checkout",
+    "validation/security-console 作为正式实现来源",
+    "未进入建仓/模块采用阶段时不要通读 upper-application-development-guide.md 等长文",
+    "released-candidate 模块不当生产默认，也不进默认工具目录"
+  ],
+  "released": [
+    "modules:application-center",
+    "modules:audit",
+    "modules:iam",
+    "modules:notification-setting",
+    "modules:security-setting"
+  ],
+  "releasedCandidate": [
+    "modules:ai-assistant",
+    "modules:identity-federation",
+    "modules:login-brand"
+  ],
+  "defaultTools": {
+    "includeReleasedModulesOnly": true
+  }
+}

@@ -1,0 +1,1062 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Flat Buck error catalog for AI agents and RAG.",
+  "errors": [
+    {
+      "code": "AI_ASSISTANT_ASSISTANT_NOT_FOUND",
+      "module": "ai-assistant",
+      "httpStatus": 404,
+      "message": "AI 助手不存在",
+      "recovery": "刷新助手列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_CONVERSATION_NOT_FOUND",
+      "module": "ai-assistant",
+      "httpStatus": 404,
+      "message": "AI 会话不存在",
+      "recovery": "刷新会话后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_MODEL_CALL_FAILED",
+      "module": "ai-assistant",
+      "httpStatus": 502,
+      "message": "AI 回复失败",
+      "recovery": "检查 AI 服务或稍后重试。",
+      "retryable": true
+    },
+    {
+      "code": "AI_ASSISTANT_MODEL_PROVIDER_NOT_FOUND",
+      "module": "ai-assistant",
+      "httpStatus": 409,
+      "message": "AI 服务不可用",
+      "recovery": "检查 AI 服务设置后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_MODEL_SERVICE_IN_USE",
+      "module": "ai-assistant",
+      "httpStatus": 409,
+      "message": "AI 服务仍被会话引用",
+      "recovery": "先清理引用该服务的 AI 会话后再删除。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_MODEL_SERVICE_NOT_FOUND",
+      "module": "ai-assistant",
+      "httpStatus": 404,
+      "message": "AI 服务不存在",
+      "recovery": "刷新 AI 服务列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_NO_AVAILABLE_MODEL_SERVICE",
+      "module": "ai-assistant",
+      "httpStatus": 409,
+      "message": "暂无可用 AI 服务",
+      "recovery": "先新增并启用至少一个 AI 服务后再使用助手。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_SECRET_VALUE_NOT_ALLOWED",
+      "module": "ai-assistant",
+      "httpStatus": 400,
+      "message": "AI 服务不能直接保存密钥",
+      "recovery": "请在访问密钥中填写。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_TOOL_CALL_NOT_FOUND",
+      "module": "ai-assistant",
+      "httpStatus": 404,
+      "message": "AI 操作不存在",
+      "recovery": "刷新后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_TOOL_CALL_STATE_INVALID",
+      "module": "ai-assistant",
+      "httpStatus": 409,
+      "message": "AI 操作当前不能处理",
+      "recovery": "刷新后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AI_ASSISTANT_TOOL_NOT_FOUND",
+      "module": "ai-assistant",
+      "httpStatus": 409,
+      "message": "AI 操作不可用",
+      "recovery": "检查当前用户权限后重试。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_APPLICATION_CODE_DUPLICATED",
+      "module": "application-center",
+      "httpStatus": 409,
+      "message": "应用编码已存在",
+      "recovery": "使用一个未被占用的应用编码。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_APPLICATION_NAME_DUPLICATED",
+      "module": "application-center",
+      "httpStatus": 409,
+      "message": "应用名称已存在",
+      "recovery": "使用一个未被占用的应用名称。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_APPLICATION_NOT_FOUND",
+      "module": "application-center",
+      "httpStatus": 404,
+      "message": "应用不存在",
+      "recovery": "刷新应用列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_APPLICATION_TYPE_INVALID",
+      "module": "application-center",
+      "httpStatus": 400,
+      "message": "应用类型不支持",
+      "recovery": "选择一个受支持的应用类型。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_CALL_RECORD_NOT_FOUND",
+      "module": "application-center",
+      "httpStatus": 404,
+      "message": "接口调用记录不存在",
+      "recovery": "刷新调用记录列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_OPENAPI_SCOPE_NOT_FOUND",
+      "module": "application-center",
+      "httpStatus": 404,
+      "message": "OpenAPI Scope 不存在",
+      "recovery": "刷新 Scope 目录后重试。",
+      "retryable": false
+    },
+    {
+      "code": "APPLICATION_CENTER_REDIRECT_URI_REQUIRED",
+      "module": "application-center",
+      "httpStatus": 400,
+      "message": "当前应用类型必须配置回调地址",
+      "recovery": "补充至少一个合法的回调地址后重试。",
+      "retryable": false
+    },
+    {
+      "code": "AUDIT_LOG_NOT_FOUND",
+      "module": "audit",
+      "httpStatus": 404,
+      "message": "审计日志不存在",
+      "recovery": "请确认日志编号是否正确",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_DEVICE_ID_REQUIRED",
+      "module": "core:error",
+      "httpStatus": 401,
+      "message": "登录需要携带设备标识",
+      "recovery": "使用正式登录页重试，或在请求中提供 Device-Id。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_FORBIDDEN",
+      "module": "core:error",
+      "httpStatus": 403,
+      "message": "没有访问权限",
+      "recovery": "联系管理员开通权限。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_INTERNAL_ERROR",
+      "module": "core:error",
+      "httpStatus": 500,
+      "message": "服务器异常",
+      "recovery": "请稍后重试，若仍失败请联系管理员。",
+      "retryable": true
+    },
+    {
+      "code": "BRICK_INVALID_CREDENTIALS",
+      "module": "core:error",
+      "httpStatus": 401,
+      "message": "用户名或密码错误",
+      "recovery": "检查账号密码后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_LOGIN_BLOCKED",
+      "module": "core:error",
+      "httpStatus": 429,
+      "message": "当前登录已被临时限制",
+      "recovery": "请稍后重试，若仍失败请检查登录安全配置。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_MEDIA_TYPE_NOT_SUPPORTED",
+      "module": "core:error",
+      "httpStatus": 415,
+      "message": "请求媒体类型不支持",
+      "recovery": "检查 Content-Type 后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_METHOD_NOT_ALLOWED",
+      "module": "core:error",
+      "httpStatus": 405,
+      "message": "请求方法不支持",
+      "recovery": "检查请求方法后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_REQUEST_BODY_INVALID",
+      "module": "core:error",
+      "httpStatus": 400,
+      "message": "请求体无法解析",
+      "recovery": "检查请求 JSON 格式后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_REQUEST_NOT_FOUND",
+      "module": "core:error",
+      "httpStatus": 404,
+      "message": "请求地址不存在",
+      "recovery": "检查请求地址后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_REQUEST_PARAMETER_INVALID",
+      "module": "core:error",
+      "httpStatus": 400,
+      "message": "请求参数不合法",
+      "recovery": "检查请求参数后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_TRANSACTION_TIMEOUT",
+      "module": "core:error",
+      "httpStatus": 503,
+      "message": "服务处理超时",
+      "recovery": "请稍后重试，若仍失败请联系管理员。",
+      "retryable": true
+    },
+    {
+      "code": "BRICK_UNAUTHORIZED",
+      "module": "core:error",
+      "httpStatus": 401,
+      "message": "未登录或登录已过期",
+      "recovery": "重新登录后重试。",
+      "retryable": false
+    },
+    {
+      "code": "BRICK_UPLOAD_SIZE_EXCEEDED",
+      "module": "core:error",
+      "httpStatus": 400,
+      "message": "上传文件超出限制",
+      "recovery": "缩小文件后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_EMPLOYEE_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "员工不存在",
+      "recovery": "刷新员工列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_EMPLOYEE_USERNAME_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "员工登录名已存在",
+      "recovery": "使用一个未被占用的登录名。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_CHILDREN_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前功能点/功能组下仍有下级节点",
+      "recovery": "先处理下级功能点/功能组后再删除当前节点。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_CODE_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "功能点/功能组编码已存在",
+      "recovery": "使用一个未被占用的功能点/功能组编码。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_DISABLED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "功能点/功能组已停用",
+      "recovery": "启用该功能点/功能组后重试，或改选启用中的功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_MENUS_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前功能点/功能组下仍有关联菜单",
+      "recovery": "先解除菜单归属后再删除当前功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_NAME_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "同级功能点/功能组名称已存在",
+      "recovery": "在当前上级功能点/功能组下使用一个未被占用的名称。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "功能点/功能组不存在",
+      "recovery": "刷新功能点/功能组目录后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_PARENT_DISABLED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "上级功能点/功能组已停用",
+      "recovery": "启用上级功能点/功能组后重试，或改选启用中的功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_PARENT_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "上级功能点/功能组不存在",
+      "recovery": "重新选择一个存在的上级功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_FUNCTION_POINT_PERMISSIONS_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前功能点/功能组下仍有关联权限点",
+      "recovery": "先迁移或删除关联权限点后再删除当前功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_INITIAL_PASSWORD_NOT_CONFIGURED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前未配置全局初始密码",
+      "recovery": "请先到密码策略中设置当前初始密码后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_CHILDREN_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前菜单下仍有子菜单",
+      "recovery": "先处理子菜单后再删除当前菜单。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_CODE_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "菜单编码已存在",
+      "recovery": "使用一个未被占用的菜单编码。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_FUNCTION_POINT_REQUIRED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "业务页面菜单必须绑定功能点",
+      "recovery": "目录/分组菜单可以不绑定功能点；业务页面菜单需先选择一个启用中的功能点。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_NAME_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "同级菜单名称已存在",
+      "recovery": "在当前上级菜单下使用一个未被占用的名称。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "菜单不存在",
+      "recovery": "刷新菜单列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_PARENT_DISABLED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "上级菜单已停用",
+      "recovery": "启用上级菜单后重试，或改选启用中的上级菜单。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_MENU_PARENT_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "上级菜单不存在",
+      "recovery": "重新选择一个存在的上级菜单。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_CHILDREN_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前组织下仍有子组织",
+      "recovery": "先处理子组织后再删除当前组织。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_CODE_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "组织编码已存在",
+      "recovery": "使用一个未被占用的组织编码。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_EMPLOYEES_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前组织下仍有关联员工",
+      "recovery": "先迁移或停用关联员工后再删除当前组织。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_NAME_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "同级组织名称已存在",
+      "recovery": "在当前上级组织下使用一个未被占用的名称。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "组织不存在",
+      "recovery": "刷新组织树后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_PARENT_DISABLED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "上级组织已停用",
+      "recovery": "启用上级组织后重试，或改选启用中的上级组织。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ORGANIZATION_PARENT_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "上级组织不存在",
+      "recovery": "重新选择一个存在的上级组织。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PERMISSION_CODE_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "权限编码已存在",
+      "recovery": "使用一个未被占用的权限编码。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PERMISSION_FUNCTION_POINT_DISABLED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "归属功能点/功能组已停用",
+      "recovery": "启用归属功能点/功能组后重试，或改选启用中的功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PERMISSION_FUNCTION_POINT_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "归属功能点/功能组不存在",
+      "recovery": "重新选择一个存在的功能点/功能组。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PERMISSION_NAME_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "同一功能点/功能组下权限名称已存在",
+      "recovery": "在当前功能点/功能组下使用一个未被占用的权限名称。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PERMISSION_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "权限不存在",
+      "recovery": "刷新权限列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PERMISSION_ROLE_BINDINGS_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前权限点仍已分配给角色",
+      "recovery": "先解除角色权限分配后再删除当前权限点。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_PRINCIPAL_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "主体不存在",
+      "recovery": "刷新主体信息后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_DISABLED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "角色已停用",
+      "recovery": "启用该角色后再分配，或改选一个启用中的角色。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_EMPLOYEES_EXIST",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前角色仍已分配给员工",
+      "recovery": "先解除员工角色分配后再删除当前角色。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_EXCLUSION_EXISTING_ASSIGNMENTS",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "当前仍有账号同时拥有这两个角色",
+      "recovery": "确认后可继续创建规则；已有分配不会自动解除，之后新的同时分配会被拦截。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_EXCLUSION_PAIR_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "角色互斥规则已存在",
+      "recovery": "无需重复创建相同的互斥角色对。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_EXCLUSION_PAIR_INVALID",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "角色互斥规则无效",
+      "recovery": "请选择两个不同且存在的角色。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_EXCLUSION_PAIR_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "角色互斥规则不存在",
+      "recovery": "刷新互斥规则列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_MUTUAL_EXCLUSION",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "所选角色存在互斥关系，不能同时分配",
+      "recovery": "移除互斥角色组合后重试，或调整角色互斥配置。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_NAME_DUPLICATED",
+      "module": "iam",
+      "httpStatus": 409,
+      "message": "角色名称已存在",
+      "recovery": "使用一个未被占用的角色名称。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_ROLE_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "角色不存在",
+      "recovery": "刷新角色列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IAM_SESSION_NOT_FOUND",
+      "module": "iam",
+      "httpStatus": 404,
+      "message": "会话不存在",
+      "recovery": "刷新会话列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_LINK_ALREADY_BOUND",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "该上游身份已关联本地员工",
+      "recovery": "如需改绑，请先解除现有关联再绑定。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_LINK_EMPLOYEE_ALREADY_BOUND",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "该本地员工已关联同一身份源下的其它上游身份",
+      "recovery": "请先解除该员工在本身份源上的已有关联。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_LINK_EMPLOYEE_NOT_FOUND",
+      "module": "identity-federation",
+      "httpStatus": 404,
+      "message": "本地员工不存在",
+      "recovery": "请在员工管理中确认员工后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_LINK_FAILED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "身份关联失败",
+      "recovery": "请检查暂存数据、员工状态与绑定冲突后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_LINK_STAGE_NOT_FOUND",
+      "module": "identity-federation",
+      "httpStatus": 404,
+      "message": "未找到可关联的上游暂存人员",
+      "recovery": "请先在身份同步中心执行预览/同步，确保暂存表有人员数据。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_LINK_SUBJECT_MISSING",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "上游人员缺少稳定主体标识（如钉钉 unionId）",
+      "recovery": "请确认通讯录同步返回 unionId，或重新预览同步后再关联。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_ACCOUNT_NOT_LINKED",
+      "module": "identity-federation",
+      "httpStatus": 403,
+      "message": "外部账号未关联到本地用户",
+      "recovery": "请联系管理员为该账号开通权限并绑定身份源，或先使用本地账号登录。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_CAS_APP_ID_REQUIRED",
+      "module": "identity-federation",
+      "httpStatus": 400,
+      "message": "CAS 预设需要应用通信 ID",
+      "recovery": "海南等类 CAS 门户请填写 appId（应用通信 ID）。标准 CAS 可留空。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_ENDPOINT_INVALID",
+      "module": "identity-federation",
+      "httpStatus": 400,
+      "message": "身份源服务地址或端点无效",
+      "recovery": "请填写必填的服务地址（https:// 或 http:// 完整 URL）。CAS 还需有效的验票路径。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_ISSUER_UNREACHABLE",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "服务地址当前不通",
+      "recovery": "请确认服务地址与网络后重试（保存仍可落库；测试连接需要地址可连通）。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_KEY_DUPLICATED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "身份源标识已存在",
+      "recovery": "请更换一个未被占用的标识。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_KEY_INVALID",
+      "module": "identity-federation",
+      "httpStatus": 400,
+      "message": "身份源标识不合法",
+      "recovery": "标识仅允许小写字母、数字、连字符与下划线，长度 2–64，且须全局唯一。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_LOGIN_ENTRY_OPEN_CANNOT_DELETE",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "已开通登录入口的身份源不能直接删除",
+      "recovery": "请先在「登录安全 → 登录方式」中关闭该身份源的登录入口，再删除。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_NOT_FOUND",
+      "module": "identity-federation",
+      "httpStatus": 404,
+      "message": "身份源不存在",
+      "recovery": "刷新身份源列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_NOT_VERIFIED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "身份源尚未通过测试连接",
+      "recovery": "请先完成测试连接并确认状态为「已验证」。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_PUBLIC_BASE_URL_MISSING",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "未配置回调公网基址，无法生成回调 URL",
+      "recovery": "请在身份源表单填写「回调公网基址」（浏览器与 IdP 可访问，无尾斜杠）。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_SECRET_MASK_REJECTED",
+      "module": "identity-federation",
+      "httpStatus": 400,
+      "message": "不能使用掩码占位作为 Client Secret",
+      "recovery": "请输入完整新密钥，或在未改密钥时留空以保留已有密钥。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_SECRET_REQUIRED",
+      "module": "identity-federation",
+      "httpStatus": 400,
+      "message": "需要填写 Client Secret",
+      "recovery": "新建时必须填写。编辑时若尚未配置密钥必须填写；已配置密钥可留空表示不修改。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_TEST_START_FAILED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "无法发起测试连接",
+      "recovery": "请确认身份源已保存且 Client Secret 已配置，并检查公网基址与端点配置。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SOURCE_TYPE_UNSUPPORTED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "该身份源类型暂不可配置",
+      "recovery": "当前可配置 OAuth2.0、GitHub、钉钉与 CAS；AD/LDAP、企业微信即将支持。厂商门户请选 CAS 并选预设，不要新增厂商类型。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_BUSY",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "已有同步任务进行中",
+      "recovery": "请等待当前任务结束后再预览或应用。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_CONFIRM_REQUIRED",
+      "module": "identity-federation",
+      "httpStatus": 400,
+      "message": "需要确认后才能写入",
+      "recovery": "请勾选确认并再次提交应用同步。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_DISABLED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "通讯录同步已停用",
+      "recovery": "请在策略中重新启用通讯录同步后再操作。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_FAILED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "通讯录同步失败",
+      "recovery": "请根据错误分类（凭证/权限/网络/范围）排查后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_NOT_SUPPORTED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "该身份源类型不支持通讯录同步",
+      "recovery": "首期仅支持钉钉企业内部应用。请选择钉钉身份源后再配置同步。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_PREVIEW_EXPIRED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "预览结果已失效或不匹配",
+      "recovery": "请重新预览后再应用，避免用过期差异写入生产。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_PREVIEW_REQUIRED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "请先预览再应用同步",
+      "recovery": "点击「预览将同步的内容」确认差异后，再应用本次同步。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_RUN_NOT_FOUND",
+      "module": "identity-federation",
+      "httpStatus": 404,
+      "message": "同步运行记录不存在",
+      "recovery": "刷新最近运行列表后重试。",
+      "retryable": false
+    },
+    {
+      "code": "IDENTITY_FEDERATION_SYNC_SECRET_REQUIRED",
+      "module": "identity-federation",
+      "httpStatus": 409,
+      "message": "未配置 AppSecret，无法同步通讯录",
+      "recovery": "请先在身份源中填写并保存 AppKey/AppSecret。",
+      "retryable": false
+    },
+    {
+      "code": "LOGIN_BRAND_BACKGROUND_INVALID",
+      "module": "login-brand",
+      "httpStatus": 400,
+      "message": "登录背景图资源无效",
+      "recovery": "请重新上传可用的背景图片后保存。",
+      "retryable": false
+    },
+    {
+      "code": "LOGIN_BRAND_LOGO_INVALID",
+      "module": "login-brand",
+      "httpStatus": 400,
+      "message": "登录 Logo 资源无效",
+      "recovery": "请重新上传可用的图片资源后保存。",
+      "retryable": false
+    },
+    {
+      "code": "LOGIN_BRAND_SETTING_INVALID",
+      "module": "login-brand",
+      "httpStatus": 400,
+      "message": "登录外观配置参数不合法",
+      "recovery": "请检查系统名称、布局位置、颜色和资源引用后重试。",
+      "retryable": false
+    },
+    {
+      "code": "LOGIN_BRAND_SETTING_SAVE_FAILED",
+      "module": "login-brand",
+      "httpStatus": 409,
+      "message": "登录外观配置未能保存",
+      "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。",
+      "retryable": false
+    },
+    {
+      "code": "NOTIFICATION_SETTING_EMAIL_SMTP_CHANNEL_IN_USE",
+      "module": "notification-setting",
+      "httpStatus": 409,
+      "message": "邮件通道仍被其他能力使用，无法按当前方式停用或清空",
+      "recovery": "请先在登录安全中关闭邮箱 MFA 等依赖项，再停用或修改本通道。",
+      "retryable": false
+    },
+    {
+      "code": "NOTIFICATION_SETTING_EMAIL_SMTP_INVALID_CONFIGURATION",
+      "module": "notification-setting",
+      "httpStatus": 409,
+      "message": "邮件通道配置不完整或参数不合法",
+      "recovery": "请补齐 SMTP 主机、端口、认证账号等必填项后重试。",
+      "retryable": false
+    },
+    {
+      "code": "NOTIFICATION_SETTING_EMAIL_SMTP_NOT_READY",
+      "module": "notification-setting",
+      "httpStatus": 409,
+      "message": "邮件通道尚未就绪，不能测试发送",
+      "recovery": "请先启用通道并保存完整的 SMTP 主机、端口、账号和密码，再发送测试邮件。",
+      "retryable": false
+    },
+    {
+      "code": "NOTIFICATION_SETTING_EMAIL_SMTP_SAVE_FAILED",
+      "module": "notification-setting",
+      "httpStatus": 409,
+      "message": "邮件通道配置未能保存",
+      "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。",
+      "retryable": false
+    },
+    {
+      "code": "NOTIFICATION_SETTING_EMAIL_SMTP_TEST_SEND_FAILED",
+      "module": "notification-setting",
+      "httpStatus": 409,
+      "message": "测试邮件发送失败",
+      "recovery": "请检查 SMTP 主机、端口、账号、密码与网络连通后重试；页面与日志均不会回显密码明文。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_KEY_INVALID",
+      "module": "securitySetting",
+      "httpStatus": 400,
+      "message": "身份源标识不合法",
+      "recovery": "请使用有效的身份源 sourceKey（与身份源管理中的标识一致）。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_FEDERATED_LOGIN_SOURCE_NOT_READY",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "身份源尚未就绪，不能开通登录入口",
+      "recovery": "请先在身份源中完成测试连接（状态为已验证）并确认密钥与端点已配置，再到登录安全开通入口。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_LOGIN_CAPTCHA_POLICY_INVALID",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "图形验证码策略参数不合法",
+      "recovery": "请将有效期、失败阈值、统计窗口和持续时长都设为大于 0 的整数后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_LOGIN_MFA_CHANNEL_NOT_CONFIGURED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "多因子认证的默认通知渠道尚未配置完成",
+      "recovery": "请先在通知设置中完成短信或邮件通道配置，再启用多因子认证。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_LOGIN_SETTING_SAVE_FAILED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "登录安全配置未能保存",
+      "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_PASSWORD_LIFECYCLE_ACTION_INVALID",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "密码生命周期处置动作不合法",
+      "recovery": "请仅选择“提醒（REMIND）”或“阻断并改密（BLOCK）”后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_PASSWORD_POLICY_SAVE_FAILED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "密码策略未能保存",
+      "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_PASSWORD_STRENGTH_POLICY_INVALID",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "密码强度策略参数不合法",
+      "recovery": "请将最小长度设为 1 到 128 之间的整数后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_SESSION_TOKEN_POLICY_INVALID",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "会话令牌策略参数不合法",
+      "recovery": "请将访问令牌、续期令牌与记住我的有效期设为大于 0 的分钟数，并选择合法的过期处理方式后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_SESSION_TOKEN_SAVE_FAILED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "会话令牌策略未能保存",
+      "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_TRANSPORT_DIGEST_ALGORITHM_UNSUPPORTED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "请求摘要算法不受支持",
+      "recovery": "请选择 SM3 或 SHA256 后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_TRANSPORT_DIGEST_PERMIT_REQUIRED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "请求摘要缺少关键放行规则",
+      "recovery": "请保留传输元数据、登录、MFA 与改密入口的放行规则后再保存。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_TRANSPORT_PROVIDER_UNSUPPORTED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "所选传输安全提供方不受支持",
+      "recovery": "当前仅支持软国密（SOFT_GM），请改回该选项后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_TRANSPORT_REGEX_INVALID",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "传输安全 URL 正则表达式不合法",
+      "recovery": "请检查保护范围或放行 URL 的正则语法后重试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_TRANSPORT_SECURITY_SAVE_FAILED",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "传输安全配置未能保存",
+      "recovery": "请刷新页面后重试；若仍失败，检查网络或联系管理员。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_WEAK_PASSWORD_LIBRARY_EMPTY",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "弱密码库为空，无法开始扫描",
+      "recovery": "请先在弱密码库中维护至少一条弱密码并保存策略，再发起扫描。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_WEAK_PASSWORD_SCAN_BUSY",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "已有弱密码扫描任务在执行",
+      "recovery": "请等待当前扫描完成后再试。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_WEAK_PASSWORD_SCAN_NOT_FOUND",
+      "module": "securitySetting",
+      "httpStatus": 404,
+      "message": "扫描任务不存在或已过期",
+      "recovery": "请重新发起扫描。",
+      "retryable": false
+    },
+    {
+      "code": "SECURITY_SETTING_WEAK_PASSWORD_SCAN_UNAVAILABLE",
+      "module": "securitySetting",
+      "httpStatus": 409,
+      "message": "弱密码扫描暂不可用",
+      "recovery": "请确认已启用账号/IAM 相关模块后再发起扫描。",
+      "retryable": false
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Buck Business Agent"
+  short_description: "Guides Buck upper business app agents"
+  default_prompt: "Use $buck-business-agent to evaluate a Buck-based business repository before implementation."
+
+policy:
+  allow_implicit_invocation: true

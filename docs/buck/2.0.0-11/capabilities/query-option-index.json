@@ -1,0 +1,1081 @@
+{
+  "schemaVersion": 1,
+  "kind": "brick-query-option-index",
+  "purpose": "Static query/option field whitelist for business agents. Do not treat incomplete codes as a full contract.",
+  "source": "java-source-scan",
+  "queries": [
+    {
+      "queryCode": "ai-assistant.assistant.list",
+      "moduleKey": "ai-assistant",
+      "file": "modules/ai-assistant/backend/src/main/java/io/github/wu9007/buck/modules/aiassistant/assistant/provider/AiAssistantQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 100,
+      "fields": [
+        {
+          "property": "assistantId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "assistantCode",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "eq",
+            "lk"
+          ]
+        },
+        {
+          "property": "assistantName",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "enabled",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        },
+        {
+          "property": "alterTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "assistantCode",
+          "direction": "asc"
+        }
+      ]
+    },
+    {
+      "queryCode": "ai-assistant.model-service.list",
+      "moduleKey": "ai-assistant",
+      "file": "modules/ai-assistant/backend/src/main/java/io/github/wu9007/buck/modules/aiassistant/modelservice/provider/AiModelServiceQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 100,
+      "fields": [
+        {
+          "property": "modelServiceId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "serviceCode",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "eq",
+            "lk"
+          ]
+        },
+        {
+          "property": "serviceName",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "providerCode",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "defaultModel",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "enabled",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        },
+        {
+          "property": "alterTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "serviceCode",
+          "direction": "asc"
+        }
+      ]
+    },
+    {
+      "queryCode": "ai-assistant.tool-call.pending",
+      "moduleKey": "ai-assistant",
+      "file": "modules/ai-assistant/backend/src/main/java/io/github/wu9007/buck/modules/aiassistant/toolcall/provider/AiToolCallQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 100,
+      "fields": [
+        {
+          "property": "toolCallId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "conversationId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "messageId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "toolCode",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "status",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "executionPolicy",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "riskLevel",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "proposedArgumentsJson",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "expireTime",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "btw",
+            "gte",
+            "lte"
+          ]
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "createTime",
+          "direction": "asc"
+        }
+      ]
+    },
+    {
+      "queryCode": "application-center.application.list",
+      "moduleKey": "application-center",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/application/provider/ApplicationQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "applicationId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "applicationName",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "applicationCode",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "applicationType",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "logoResourceId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "enabled",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "alterTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "alterTime",
+          "direction": "desc"
+        },
+        {
+          "property": "createTime",
+          "direction": "desc"
+        }
+      ]
+    },
+    {
+      "queryCode": "application-center.call-record.list",
+      "moduleKey": "application-center",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/callrecord/provider/ApplicationCallRecordQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "callRecordId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "clientId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "requestMethod",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "requestPath",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "summary",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "traceId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "eventTime",
+          "selectable": true,
+          "sortable": true,
+          "operators": []
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "eventTime",
+          "direction": "desc"
+        },
+        {
+          "property": "createTime",
+          "direction": "desc"
+        }
+      ]
+    },
+    {
+      "queryCode": "audit.log.list",
+      "moduleKey": "audit",
+      "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/provider/AuditLogQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "auditLogId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "requestMethod",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "clientId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "operatorId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "operatorName",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "targetType",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "targetId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "targetName",
+          "selectable": false,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "summary",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "traceId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "remoteAddress",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "requestPath",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk",
+            "notlk"
+          ]
+        },
+        {
+          "property": "eventTime",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "btw",
+            "gte",
+            "lte"
+          ]
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "eventTime",
+          "direction": "desc"
+        },
+        {
+          "property": "createTime",
+          "direction": "desc"
+        }
+      ]
+    },
+    {
+      "queryCode": "iam.authsource.list",
+      "moduleKey": "identity-federation",
+      "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/authsource/provider/IdentitySourceQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "identitySourceId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "sourceKey",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "eq",
+            "lk"
+          ]
+        },
+        {
+          "property": "displayName",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "sourceType",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "verificationStatus",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "logoResourceId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "lastVerifiedAt",
+          "selectable": true,
+          "sortable": true,
+          "operators": []
+        },
+        {
+          "property": "createTime",
+          "selectable": true,
+          "sortable": true,
+          "operators": []
+        },
+        {
+          "property": "alterTime",
+          "selectable": true,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "alterTime",
+          "direction": "desc"
+        }
+      ]
+    },
+    {
+      "queryCode": "iam.employee.list",
+      "moduleKey": "iam",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/employee/provider/EmployeeQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "employeeId",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "principalId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "employeeName",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq",
+            "lk"
+          ]
+        },
+        {
+          "property": "organizationId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "phoneNumber",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "phoneNumberBlind",
+          "selectable": false,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "email",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "emailBlind",
+          "selectable": false,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "idCardNumber",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "idCardNumberBlind",
+          "selectable": false,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "enabled",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "employeeId",
+          "direction": "asc"
+        }
+      ]
+    },
+    {
+      "queryCode": "iam.role.list",
+      "moduleKey": "iam",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/role/provider/RoleQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "roleId",
+          "selectable": true,
+          "sortable": true,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "roleName",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq",
+            "lk"
+          ]
+        },
+        {
+          "property": "enabled",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "createTime",
+          "selectable": false,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "roleId",
+          "direction": "asc"
+        }
+      ]
+    },
+    {
+      "queryCode": "iam.session.list",
+      "moduleKey": "iam",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/session/provider/SessionQueryDefinitionConfiguration.java",
+      "schemaStatus": "complete",
+      "maxPageSize": 200,
+      "fields": [
+        {
+          "property": "sessionId",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "principalId",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq",
+            "in"
+          ]
+        },
+        {
+          "property": "username",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "lk"
+          ]
+        },
+        {
+          "property": "sessionStatus",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "authenticationMode",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "visitorTerminal",
+          "selectable": true,
+          "sortable": false,
+          "operators": [
+            "eq"
+          ]
+        },
+        {
+          "property": "remoteAddress",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "accessTokenExpiresAt",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "refreshTokenExpiresAt",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "lastRefreshedAt",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "loggedOutAt",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "invalidatedAt",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "invalidatedReason",
+          "selectable": true,
+          "sortable": false,
+          "operators": []
+        },
+        {
+          "property": "createTime",
+          "selectable": true,
+          "sortable": true,
+          "operators": []
+        }
+      ],
+      "defaultSorters": [
+        {
+          "property": "createTime",
+          "direction": "desc"
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "optionCode": "application_center_application_type",
+      "moduleKey": "application-center",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/application/provider/ApplicationTypeOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "oidc_web",
+          "label": "OIDC Web"
+        },
+        {
+          "value": "oidc_spa",
+          "label": "OIDC SPA"
+        },
+        {
+          "value": "machine_client",
+          "label": "Machine Client"
+        }
+      ]
+    },
+    {
+      "optionCode": "application_center_call_record_result",
+      "moduleKey": "application-center",
+      "file": "modules/application-center/backend/src/main/java/io/github/wu9007/buck/modules/applicationcenter/callrecord/provider/ApplicationCallRecordResultOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "OpenApiAccessResult.SUCCESS.name()",
+          "label": "成功"
+        },
+        {
+          "value": "OpenApiAccessResult.FAILURE.name()",
+          "label": "失败"
+        }
+      ]
+    },
+    {
+      "optionCode": "audit_log_category",
+      "moduleKey": "audit",
+      "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/provider/AuditLogCategoryOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "AUTHENTICATION",
+          "label": "认证"
+        },
+        {
+          "value": "AUTHORIZATION",
+          "label": "鉴权"
+        },
+        {
+          "value": "SECURITY_SETTING",
+          "label": "安全配置"
+        },
+        {
+          "value": "PRINCIPAL_SECURITY",
+          "label": "主体安全"
+        },
+        {
+          "value": "SESSION",
+          "label": "会话"
+        },
+        {
+          "value": "DATA_CHANGE",
+          "label": "数据变更"
+        }
+      ]
+    },
+    {
+      "optionCode": "audit_log_result",
+      "moduleKey": "audit",
+      "file": "modules/audit/backend/src/main/java/io/github/wu9007/buck/modules/audit/log/provider/AuditLogResultOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "BrickAuditResult.SUCCESS.name()",
+          "label": "成功"
+        },
+        {
+          "value": "BrickAuditResult.FAILURE.name()",
+          "label": "失败"
+        }
+      ]
+    },
+    {
+      "optionCode": "iam_identity_source_type",
+      "moduleKey": "identity-federation",
+      "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/authsource/provider/IdentitySourceTypeOptionProvider.java",
+      "schemaStatus": "incomplete",
+      "items": [],
+      "note": "禁止把该 optionCode 当完整选项契约；以运行时 BrickOptionProvider 为准。"
+    },
+    {
+      "optionCode": "iam_identity_source_verification_status",
+      "moduleKey": "identity-federation",
+      "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/authsource/provider/IdentitySourceVerificationStatusOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "UNVERIFIED",
+          "label": "未验证"
+        },
+        {
+          "value": "VERIFICATION_FAILED",
+          "label": "验证失败"
+        },
+        {
+          "value": "VERIFIED",
+          "label": "已验证"
+        }
+      ]
+    },
+    {
+      "optionCode": "iam_identity_sync_run_status",
+      "moduleKey": "identity-federation",
+      "file": "modules/identity-federation/backend/src/main/java/io/github/wu9007/buck/modules/identityfederation/identitysync/provider/IdentitySyncOptionProviders.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "MISSING_CREATE",
+          "label": "不存在时自动创建"
+        },
+        {
+          "value": "MISSING_EXISTING_ONLY",
+          "label": "仅暂存（待身份关联）"
+        },
+        {
+          "value": "NAME_FIRST_ONLY",
+          "label": "显示名仅首次写入"
+        },
+        {
+          "value": "NAME_OVERWRITE",
+          "label": "允许覆盖显示名"
+        },
+        {
+          "value": "LEAVE_DISABLE",
+          "label": "禁用账号"
+        },
+        {
+          "value": "LEAVE_IGNORE",
+          "label": "忽略离职状态"
+        },
+        {
+          "value": "STATUS_RUNNING",
+          "label": "进行中"
+        },
+        {
+          "value": "STATUS_SUCCEEDED",
+          "label": "已完成"
+        },
+        {
+          "value": "STATUS_FAILED",
+          "label": "失败"
+        },
+        {
+          "value": "STATUS_ZERO",
+          "label": "0 条结果"
+        }
+      ]
+    },
+    {
+      "optionCode": "iam_session_authentication_mode",
+      "moduleKey": "iam",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/session/provider/SessionAuthenticationModeOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "username-password",
+          "label": "账号密码"
+        },
+        {
+          "value": "sms-code",
+          "label": "短信验证码"
+        },
+        {
+          "value": "sms-mfa",
+          "label": "短信二次验证"
+        }
+      ]
+    },
+    {
+      "optionCode": "iam_session_status",
+      "moduleKey": "iam",
+      "file": "modules/iam/backend/src/main/java/io/github/wu9007/buck/modules/iam/session/provider/SessionStatusOptionProvider.java",
+      "schemaStatus": "complete",
+      "items": [
+        {
+          "value": "ACTIVE",
+          "label": "活跃"
+        },
+        {
+          "value": "INVALIDATED",
+          "label": "已下线"
+        },
+        {
+          "value": "LOGGED_OUT",
+          "label": "已退出"
+        },
+        {
+          "value": "EXPIRED",
+          "label": "已过期"
+        }
+      ]
+    },
+    {
+      "optionCode": "security_setting_login_mfa_mode",
+      "moduleKey": "securitySetting",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/login/provider/LoginMfaModeOptionProvider.java",
+      "schemaStatus": "incomplete",
+      "items": [],
+      "note": "禁止把该 optionCode 当完整选项契约；以运行时 BrickOptionProvider 为准。"
+    },
+    {
+      "optionCode": "security_setting_password_lifecycle_action",
+      "moduleKey": "securitySetting",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/password/provider/PasswordLifecycleActionOptionProvider.java",
+      "schemaStatus": "incomplete",
+      "items": [],
+      "note": "禁止把该 optionCode 当完整选项契约；以运行时 BrickOptionProvider 为准。"
+    },
+    {
+      "optionCode": "security_setting_transport_digest_algorithm",
+      "moduleKey": "securitySetting",
+      "file": "modules/security-setting/backend/src/main/java/io/github/wu9007/buck/modules/securitysetting/transport/provider/RequestDigestAlgorithmOptionProvider.java",
+      "schemaStatus": "incomplete",
+      "items": [],
+      "note": "禁止把该 optionCode 当完整选项契约；以运行时 BrickOptionProvider 为准。"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'io.github.wu9007.buckdemo'
+version = '0.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    implementation platform('io.github.wu9007:buck-bom:2.0.0-11')
+    compileOnly platform('io.github.wu9007:buck-bom:2.0.0-11')
+    annotationProcessor platform('io.github.wu9007:buck-bom:2.0.0-11')
+    testCompileOnly platform('io.github.wu9007:buck-bom:2.0.0-11')
+    testAnnotationProcessor platform('io.github.wu9007:buck-bom:2.0.0-11')
+
+    implementation 'io.github.wu9007:buck-starter-application'
+    implementation 'io.github.wu9007:buck-module-iam-backend'
+    implementation 'io.github.wu9007:buck-module-security-setting-backend'
+    implementation 'io.github.wu9007:buck-module-audit-backend'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.mapstruct:mapstruct'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor'
+
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.mapstruct:mapstruct-processor'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}

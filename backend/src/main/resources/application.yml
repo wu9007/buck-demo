@@ -1,0 +1,39 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: buck-demo
+  datasource:
+    url: ${BUSINESS_DB_URL:jdbc:h2:mem:buck_demo;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE}
+    username: ${BUSINESS_DB_USERNAME:sa}
+    password: ${BUSINESS_DB_PASSWORD:}
+    driver-class-name: ${BUSINESS_DB_DRIVER:org.h2.Driver}
+
+brick:
+  security:
+    token:
+      base64-secret: ${BRICK_TOKEN_SECRET:YnJpY2stdXBwZXItZGV2LXNlY3JldC1tdXN0LWJlLWNoYW5nZWQtMzI=}
+  transport:
+    request-digest:
+      enabled: false
+    encryption:
+      enabled: false
+  orm:
+    change-log:
+      mybatis-interceptors: true
+  iam:
+    bootstrap:
+      enabled: true
+      catalog-enabled: true
+      admin:
+        enabled: true
+        initial-password: ${BRICK_IAM_ADMIN_INITIAL_PASSWORD:ChangeMe123!}
+        grant-registered-permissions: true
+  mcp:
+    enabled: false
+    allow-anonymous: false
+
+logging:
+  level:
+    io.github.wu9007: INFO

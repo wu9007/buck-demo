@@ -1,0 +1,20 @@
+@import '@wildbuck/core-ui-frontend/theme.css';
+
+/* 业务应用只覆盖业务品牌 token、业务侧页面尺寸或局部布局；不要复制 Buck 主题实现。 */
+/* BrickConsoleShell 默认通过 BrickUserMenu 的头像下拉和个性化设置弹窗承载主题、密度、字号、自动全屏与语言入口。 */
+/* 顶部栏只保留全局操作和当前主体；系统信息放侧栏品牌区，菜单搜索用 sidebar-searchable，当前菜单标题留在侧栏 active 和页面标题区。 */
+/* 刷新、菜单引导、通知按钮通过 topbar-actions 接入；页面向导步骤用稳定 data-guide-id，按 Buck 统一规范实现。 */
+/* 编辑和详情抽屉优先使用 @wildbuck/core-ui-frontend/shell 暴露的 BrickConsoleDrawer，不要覆盖固定像素 size。 */
+/* 主题语义以 createBrickConsoleThemePresets() 为准：night 是全暗主题，深色侧栏主题不等于全暗。 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--console-page-bg);
+}
+
+.shell-app {
+  --console-content-max: 1440px;
+}

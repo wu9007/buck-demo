@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "kind": "brick-capability-packs",
+  "purpose": "Adoption grouping for business agents. Physical layout stays core → modules → starters.",
+  "packs": [
+    {
+      "id": "runtime",
+      "title": "运行时默认集",
+      "defaultOn": true,
+      "members": [
+        "starter:application",
+        "core:authorization",
+        "core:client-meta",
+        "core:datasource",
+        "core:error",
+        "core:file-resource",
+        "core:i18n",
+        "core:observability",
+        "core:openapi",
+        "core:option",
+        "core:orm-plus",
+        "core:query",
+        "core:transport",
+        "core:usage-event"
+      ]
+    },
+    {
+      "id": "identity",
+      "title": "身份与登录",
+      "defaultOn": false,
+      "members": [
+        "core:authentication",
+        "modules:iam",
+        "modules:security-setting"
+      ]
+    },
+    {
+      "id": "governance",
+      "title": "治理模块",
+      "defaultOn": false,
+      "members": [
+        "modules:audit",
+        "modules:notification-setting",
+        "modules:application-center"
+      ]
+    },
+    {
+      "id": "agent-surface",
+      "title": "Agent 面",
+      "defaultOn": false,
+      "members": [
+        "core:ai-agent"
+      ],
+      "optionalMembers": [
+        "core:mcp"
+      ],
+      "releasedCandidate": [
+        "modules:ai-assistant"
+      ]
+    }
+  ]
+}

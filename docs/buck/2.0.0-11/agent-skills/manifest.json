@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "buck-business-agent",
+      "path": "buck-business-agent",
+      "audiences": [
+        "business",
+        "maintainer"
+      ]
+    },
+    {
+      "name": "brick-business-agent",
+      "path": "brick-business-agent",
+      "audiences": [
+        "business",
+        "maintainer"
+      ]
+    }
+  ]
+}

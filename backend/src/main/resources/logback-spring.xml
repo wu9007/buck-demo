@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="brick-upper-application" />
+    <property name="LOG_HOME" value="${LOG_HOME:-logs}" />
+    <property name="LOG_MAX_HISTORY" value="${LOG_MAX_HISTORY:-14}" />
+    <property name="LOG_MAX_FILE_SIZE" value="${LOG_MAX_FILE_SIZE:-100MB}" />
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%X{traceId}] %logger{64} - %msg%n%wEx" />
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%thread]){faint} %clr([%X{traceId}]){cyan} %clr(%logger{64}){blue} %clr(:){faint} %m%n%wEx" />
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+    <!-- Buck production troubleshooting logs must keep traceId. Do not log request/response body, token, password, key, connection string, form content, attachment content, or plaintext business objects. -->
+    <appender name="APPLICATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- core:usage-event writes JSON line messages to this logger with marker BRICK_USAGE_EVENT. Keep %msg%n so collectors can import one JSON event per line. -->
+    <appender name="BRICK_USAGE_EVENT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/usage-event.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/usage-event.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="io.github.wu9007.buck.usage" level="INFO" additivity="false">
+        <appender-ref ref="BRICK_USAGE_EVENT_FILE" />
+    </logger>
+
+    <springProfile name="local,dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="APPLICATION_FILE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="!local &amp; !dev">
+        <root level="INFO">
+            <appender-ref ref="APPLICATION_FILE" />
+        </root>
+    </springProfile>
+</configuration>
