@@ -1,9 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { iamRoutes } from '@wildbuck/module-iam-frontend';
+import { brickRoutes as iamRoutes } from '@wildbuck/module-iam-frontend';
+import { brickRoutes as auditRoutes } from '@wildbuck/module-audit-frontend';
+import { brickRoutes as securitySettingRoutes } from '@wildbuck/module-security-setting-frontend';
+import HomePage from './pages/HomePage.vue';
 
-const HomeView = {
-  template: '<section class="console-page"><header class="console-page__header"><h1>业务工作台</h1><p>登录后从 IAM 当前主体菜单进入管理页。</p></header></section>',
-};
+export const moduleRoutes = [
+  ...iamRoutes,
+  ...auditRoutes,
+  ...securitySettingRoutes,
+];
+
+function toVueRoute(item) {
+  return {
+    path: item.path,
+    name: item.id,
+    component: item.component,
+    meta: {
+      permission: item.permission,
+      title: item.title,
+    },
+  };
+}
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -11,16 +28,8 @@ export const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: HomePage,
     },
-    ...iamRoutes.map((item) => ({
-      path: item.path,
-      name: item.id,
-      component: item.component,
-      meta: {
-        permission: item.permission,
-        title: item.title,
-      },
-    })),
+    ...moduleRoutes.map(toVueRoute),
   ],
 });

@@ -20,6 +20,7 @@ import {
   buildCurrentPrincipalNavigationGroups,
   loadCurrentPrincipalWorkspace,
 } from '@wildbuck/module-iam-frontend/current-principal-workspace';
+import { moduleRoutes } from './router';
 
 const router = useRouter();
 const route = useRoute();
@@ -66,15 +67,16 @@ async function loadAuthenticatedContext() {
   }
 }
 
-const auth = useAuthWorkspace({
+const authWorkspace = useAuthWorkspace({
   state,
   showStatus: showBrickStatus,
   loadAuthenticatedContext,
 });
-const isAuthFocus = auth.isAuthFocus;
+const authApp = { state, ...authWorkspace };
+const isAuthFocus = authWorkspace.isAuthFocus;
 
 const navigationGroups = computed(() => buildCurrentPrincipalNavigationGroups(
-  [],
+  moduleRoutes,
   workspace.value,
   { permissions: workspace.value?.permissions || [] },
 ));
@@ -82,12 +84,12 @@ const activeRouteId = computed(() => String(route.name || 'home'));
 const currentPrincipal = computed(() => ({
   displayName: workspace.value?.employeeName
     || workspace.value?.username
-    || auth.sessionUserName.value
+    || authWorkspace.sessionUserName.value
     || '未登录',
 }));
 
 onMounted(() => {
-  auth.bootstrapAuthState();
+  authWorkspace.bootstrapAuthState();
 });
 
 onBeforeUnmount(() => {
@@ -126,7 +128,7 @@ function openNotifications() {
 <template>
   <IamAuthFlowView
     v-if="isAuthFocus"
-    :app="auth"
+    :app="authApp"
     brand-title="Buck Demo"
     brand-mark="B"
     brand-subtitle="业务工作台"
