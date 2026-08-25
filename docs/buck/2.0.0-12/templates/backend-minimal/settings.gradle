@@ -30,5 +30,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'buck-demo'
-include 'backend'
+rootProject.name = 'brick-upper-backend'
