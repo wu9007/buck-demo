@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: "20"
       - name: Buck business structure check
-        run: node docs/buck/2.0.0-12/rules/check-business-structure.mjs .
+        run: node docs/buck/2.0.0-13/rules/check-business-structure.mjs .
 
   verify:
     name: verify
@@ -92,4 +92,4 @@ jobs:
     needs: publish_tag_artifacts
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Buck 2.0.0-12 published on GitHub"
+      - run: echo "Buck 2.0.0-13 published on GitHub"

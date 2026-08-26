@@ -14,11 +14,11 @@ java {
 }
 
 dependencies {
-    implementation platform('io.github.wu9007:buck-bom:2.0.0-12')
-    compileOnly platform('io.github.wu9007:buck-bom:2.0.0-12')
-    annotationProcessor platform('io.github.wu9007:buck-bom:2.0.0-12')
-    testCompileOnly platform('io.github.wu9007:buck-bom:2.0.0-12')
-    testAnnotationProcessor platform('io.github.wu9007:buck-bom:2.0.0-12')
+    implementation platform('io.github.wu9007:buck-bom:2.0.0-13')
+    compileOnly platform('io.github.wu9007:buck-bom:2.0.0-13')
+    annotationProcessor platform('io.github.wu9007:buck-bom:2.0.0-13')
+    testCompileOnly platform('io.github.wu9007:buck-bom:2.0.0-13')
+    testAnnotationProcessor platform('io.github.wu9007:buck-bom:2.0.0-13')
 
     implementation 'io.github.wu9007:buck-starter-application'
     implementation 'io.github.wu9007:buck-module-iam-backend'
@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor'
 
     runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly 'com.h2database:h2'
+    // H2 不在已发布 dialect 允许列表，不能用于 bootRun/test。
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
