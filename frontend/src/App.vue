@@ -72,7 +72,7 @@ const authWorkspace = useAuthWorkspace({
   showStatus: showBrickStatus,
   loadAuthenticatedContext,
 });
-const authApp = { state, ...authWorkspace };
+const authApp = shallowRef({ state, ...authWorkspace });
 const isAuthFocus = authWorkspace.isAuthFocus;
 
 const navigationGroups = computed(() => buildCurrentPrincipalNavigationGroups(

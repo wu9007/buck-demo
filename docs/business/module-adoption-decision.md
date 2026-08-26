@@ -1,6 +1,6 @@
 # Buck 模块采用决策
 
-Buck 版本：`2.0.0-12`。确认人：业务负责人。
+Buck 版本：`2.0.0-13`。确认人：业务负责人。
 
 | 能力 | 命中结论 | 采用或不采用 | 原因 / 理由 | 确认人 |
 | --- | --- | --- | --- | --- |
@@ -13,4 +13,4 @@ Buck 版本：`2.0.0-12`。确认人：业务负责人。
 | core:option | 命中（下拉/枚举选项） | 采用 | 禁止页面硬编码选项 | 业务负责人 |
 | core:orm-plus | 命中（持久化与迁移） | 采用 | 禁止业务仓手写 JDBC/SQL | 业务负责人 |
 
-不采用 `modules:ai-assistant`、`modules:identity-federation`：均为 `released-candidate`，生产默认等待 `released`。
+不采用 `modules:ai-assistant`、`modules:identity-federation`、`modules:login-brand`：均为 `released-candidate`，生产默认等待 `released`。2.0.0-13 登录页移动端接入默认关闭，本阶段不装配。
